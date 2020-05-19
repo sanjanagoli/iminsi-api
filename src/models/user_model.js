@@ -12,6 +12,7 @@ const User = new Schema({
   title: String,
   // each user will have a reference to specific analytics data
   analytics: { type: mongoose.Schema.Types.ObjectId, ref: 'Analytics' },
+  profileArticles: { type: mongoose.Schema.Types.ObjectId, ref: 'Article' },
 }, { collection: 'User' });
 
 User.set('toJSON', {

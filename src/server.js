@@ -4,10 +4,13 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-
+// import createArticle from './controllers/article_controller';
+import * as Article from './controllers/article_controller';
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
+
+
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
 
@@ -46,6 +49,26 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
+const data = {
+  title: 'String',
+  tags: 'String',
+  content: 'String',
+  imageURL: 'String',
+  location: 'String',
+  source: 'String',
+  author: 'String',
+  date: 'Date',
+};
+
+Article.createArticle(data)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 
 // const { extract } = require('article-parser');
 
