@@ -46,3 +46,12 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
+// const { extract } = require('article-parser');
+
+// const url = "https://www.nme.com/news/gaming-news/ubisoft-is-suing-apple-and-google-over-a-rainbow-six-siege-ripoff-2670643"
+// extract(url).then((article) => {
+//   console.log(article);
+// }).catch((err) => {
+//   console.log(err);
+// });
