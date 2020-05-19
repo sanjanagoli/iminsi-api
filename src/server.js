@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 import * as Article from './controllers/article_controller';
 // DB Setup
@@ -37,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // additional init stuff should go before hitting the routing
+app.use('/api', apiRouter);
 
 // default index route
 app.get('/', (req, res) => {
