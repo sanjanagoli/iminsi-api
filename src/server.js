@@ -10,8 +10,11 @@ import * as Article from './controllers/article_controller';
 import * as Interest from './controllers/interest_controller';
 
 // DB Setup
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
-mongoose.connect(mongoURI);
+require('dotenv').config(); // load environment variables
+
+console.log(process.env.MONGODB_URI);
+const mongoURI = process.env.MONGODB_URI;
+// mongoose.connect(mongoURI);
 
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
@@ -66,26 +69,26 @@ console.log(`listening on: ${port}`);
 //   date: 'Date',
 // };
 
-// const interest = {
-//   interestName: 'String',
-//   imageURL: 'String',
-// };
+const interest = {
+  interestName: 'testName1',
+  imageURL: 'testImage1',
+};
 
-// Interest.createInterest(interest)
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-Article.getArticles()
+Interest.createInterest(interest)
   .then((res) => {
     console.log(res);
   })
   .catch((err) => {
     console.log(err);
   });
+
+// Article.getArticles()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // test article
 

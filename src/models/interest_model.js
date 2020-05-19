@@ -6,7 +6,7 @@ const InterestSchema = new Schema({
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
-}, { collection: 'interest' });
+});
 
 // create model class
 const InterestModel = mongoose.model('Interest', InterestSchema);
