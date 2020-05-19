@@ -1,5 +1,6 @@
+/* eslint-disable prefer-promise-reject-errors */
 import Article from '../models/article_model';
-// import { RESPONSE_CODES } from '../constants';
+import { RESPONSE_CODES } from '../constants';
 // var ObjectId = require('mongodb').ObjectID;
 
 export const createArticle = (body) => {
@@ -16,7 +17,7 @@ export const createArticle = (body) => {
     }).then((result) => {
       resolve(result);
     }).catch((error) => {
-      reject(error);
+      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
     });
   });
 };
@@ -27,25 +28,25 @@ export const deleteArticle = (id) => {
       .then((c) => {
         resolve(c);
       }).catch((error) => {
-        reject(error);
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
 };
 
 export const getArticles = () => {
   return new Promise((resolve, reject) => {
-    Article.findById({})
+    Article.find({})
       .populate('interestCategories.interest')
       .then((articles) => {
         if (articles !== null) {
           resolve(articles);
         } else {
-          reject(new Error('could not find'));
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
         }
       })
       .catch((error) => {
         console.log('populate failed');
-        reject(error);
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
 };
@@ -58,12 +59,14 @@ export const getArticle = (id) => {
         if (article !== null) {
           resolve(article);
         } else {
-          reject(new Error('could not find'));
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
         }
       })
       .catch((error) => {
         console.log('populate failed');
-        reject(error);
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
 };
+
+// have a bulk "update" method that can update the database with a bunch

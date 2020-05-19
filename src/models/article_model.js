@@ -3,6 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 // find list of popular news topics / categories for interest categories
 // planning to use dropdown for interest categories so that we know that the user
 
+
 const ArticleSchema = new Schema({
   title: String,
   tags: String,

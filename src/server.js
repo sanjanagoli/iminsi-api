@@ -7,10 +7,11 @@ import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 import * as Article from './controllers/article_controller';
+import * as Interest from './controllers/interest_controller';
+
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
-
 
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
@@ -52,18 +53,33 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-const data = {
-  title: 'String',
-  tags: 'String',
-  content: 'String',
-  imageURL: 'String',
-  location: 'String',
-  source: 'String',
-  author: 'String',
-  date: 'Date',
-};
+// test calls
 
-Article.createArticle(data)
+// const article = {
+//   title: 'String',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   author: 'String',
+//   date: 'Date',
+// };
+
+// const interest = {
+//   interestName: 'String',
+//   imageURL: 'String',
+// };
+
+// Interest.createInterest(interest)
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+Article.getArticles()
   .then((res) => {
     console.log(res);
   })
@@ -71,6 +87,7 @@ Article.createArticle(data)
     console.log(err);
   });
 
+// test article
 
 // const { extract } = require('article-parser');
 
