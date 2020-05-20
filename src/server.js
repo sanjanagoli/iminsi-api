@@ -4,10 +4,20 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import apiRouter from './router';
+// import createArticle from './controllers/article_controller';
+import * as Article from './controllers/article_controller';
+// import * as Interest from './controllers/interest_controller';
 
 // DB Setup
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
+require('dotenv').config(); // load environment variables
+
+const mongoURI = process.env.MONGODB_URI;
 mongoose.connect(mongoURI);
+
+
+// mongoose.connect(mongoURI);
+
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
 
@@ -34,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // additional init stuff should go before hitting the routing
+app.use('/api', apiRouter);
 
 // default index route
 app.get('/', (req, res) => {
@@ -46,6 +57,42 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
+// test calls
+
+// const article = {
+//   title: 'First Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   author: 'String',
+//   date: 'Date',
+// };
+
+// const interest = {
+//   interestName: 'testName1',
+//   imageURL: 'testImage1',
+// };
+
+// Article.replaceArticleCategory('5ec47484d9745cd0f3dc591d', { interestCategories: ['5ec47061c52d38ae51d1130c'] })
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+Article.getArticles()
+  .then((res) => {
+    console.log(res[0]);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// test article
 
 // const { extract } = require('article-parser');
 

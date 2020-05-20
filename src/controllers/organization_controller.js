@@ -1,19 +1,16 @@
 /* eslint-disable prefer-promise-reject-errors */
-import Article from '../models/article_model';
+import Organization from '../models/organization_model';
 import RESPONSE_CODES from '../constants/index';
 // var ObjectId = require('mongodb').ObjectID;
 
-export const createArticle = (body) => {
+
+// handle for array of references to interests, articles, and analytics potentially
+export const createOrganization = (body) => {
   return new Promise((resolve, reject) => {
-    Article.create({
-      title: body.title,
-      tags: body.tags,
-      content: body.content,
-      imageURL: body.imageURL,
-      location: body.location,
-      urlSource: body.urlSource,
-      author: body.author,
-      date: body.Date,
+    Organization.create({
+      orgName: body.orgName,
+      score: body.score,
+      sourceUrl: body.sourceUrl,
     }).then((result) => {
       resolve(result);
     }).catch((error) => {
@@ -22,9 +19,9 @@ export const createArticle = (body) => {
   });
 };
 
-export const deleteArticle = (id) => {
+export const deleteOrganization = (id) => {
   return new Promise((resolve, reject) => {
-    Article.findByIdAndDelete(id).exec()
+    Organization.findByIdAndDelete(id).exec()
       .then((c) => {
         resolve(c);
       }).catch((error) => {
@@ -33,16 +30,12 @@ export const deleteArticle = (id) => {
   });
 };
 
-export const getArticles = () => {
+export const getOrganizations = () => {
   return new Promise((resolve, reject) => {
-    Article.find({})
-      .populate({
-        path: 'interestCategories',
-        model: 'Interest',
-      })
-      .then((articles) => {
-        if (articles !== null) {
-          resolve(articles);
+    Organization.find({})
+      .then((orgs) => {
+        if (orgs !== null) {
+          resolve(orgs);
         } else {
           reject({ code: RESPONSE_CODES.NOT_FOUND });
         }
@@ -54,37 +47,34 @@ export const getArticles = () => {
   });
 };
 
-export const getArticle = (id) => {
+export const getOrganization = (id) => {
   return new Promise((resolve, reject) => {
-    Article.findById({ id })
-      .populate({
-        path: 'interestCategories',
-        model: 'Interest',
-      })
-      .then((article) => {
-        if (article !== null) {
-          resolve(article);
+    Organization.findById({ id })
+      .then((org) => {
+        if (org !== null) {
+          resolve(org);
         } else {
           reject({ code: RESPONSE_CODES.NOT_FOUND });
         }
       })
       .catch((error) => {
-        console.log('populate failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
 };
 
-export const replaceArticleInterestCategory = (id, body) => {
+export const updateOrganization = (id, body) => {
   return new Promise((resolve, reject) => {
-    Article.findById(id)
-      .then((article) => {
-        if (body != null) {
-          article.interestCategories = body.interestCategories;
-          article.save().then((result) => {
+    Organization.findById(id)
+      .then((org) => {
+        if (body.org != null) {
+          org.orgName = body.org.orgName;
+          org.score = body.org.score;
+          org.sourceUrl = body.org.sourceUrl;
+          org.save().then((result) => {
             resolve(result);
           }).catch((error) => {
-            reject({ code: RESPONSE_CODES.BAD_REQUEST });
+            reject({ code: RESPONSE_CODES.BAD_REQUEST, error });
           });
         } else {
           reject({ code: RESPONSE_CODES.NOTHING_TO_UPDATE });
@@ -95,6 +85,3 @@ export const replaceArticleInterestCategory = (id, body) => {
       });
   });
 };
-
-
-// have a bulk "update" method that can update the database with a bunch
