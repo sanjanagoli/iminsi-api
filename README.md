@@ -5,6 +5,9 @@
 
 TODO: short project description, some sample screenshots or mockups
 
+## Notes
+`cd project-api-iminsi` and `yarn start` to start server and database
+
 ## Architecture
 
 TODO:  descriptions of code organization and tools and libraries used
