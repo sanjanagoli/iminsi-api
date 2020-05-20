@@ -10,21 +10,22 @@ const ArticleSchema = new Schema({
   content: String,
   imageURL: String,
   location: String,
-  source: String,
+  urlSource: String,
   author: String,
+  score: Number,
   date: Date,
+  newsOrganization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
   interestCategories: [
     {
-      interest: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Interest',
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Interest',
     },
   ],
+
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
-}, { collection: 'article' });
+});
 
 // create model class
 const ArticleModel = mongoose.model('Article', ArticleSchema);

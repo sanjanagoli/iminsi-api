@@ -7,13 +7,15 @@ import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 import * as Article from './controllers/article_controller';
-import * as Interest from './controllers/interest_controller';
+// import * as Interest from './controllers/interest_controller';
 
 // DB Setup
 require('dotenv').config(); // load environment variables
 
-console.log(process.env.MONGODB_URI);
 const mongoURI = process.env.MONGODB_URI;
+mongoose.connect(mongoURI);
+
+
 // mongoose.connect(mongoURI);
 
 // set mongoose promises to es6 default
@@ -59,7 +61,7 @@ console.log(`listening on: ${port}`);
 // test calls
 
 // const article = {
-//   title: 'String',
+//   title: 'First Article',
 //   tags: 'String',
 //   content: 'String',
 //   imageURL: 'String',
@@ -69,26 +71,26 @@ console.log(`listening on: ${port}`);
 //   date: 'Date',
 // };
 
-const interest = {
-  interestName: 'testName1',
-  imageURL: 'testImage1',
-};
+// const interest = {
+//   interestName: 'testName1',
+//   imageURL: 'testImage1',
+// };
 
-Interest.createInterest(interest)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-// Article.getArticles()
+// Article.replaceArticleCategory('5ec47484d9745cd0f3dc591d', { interestCategories: ['5ec47061c52d38ae51d1130c'] })
 //   .then((res) => {
 //     console.log(res);
 //   })
 //   .catch((err) => {
 //     console.log(err);
 //   });
+
+Article.getArticles()
+  .then((res) => {
+    console.log(res[0]);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // test article
 

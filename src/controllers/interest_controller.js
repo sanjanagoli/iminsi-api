@@ -29,6 +29,10 @@ export const deleteInterest = (id) => {
 export const getInterests = () => {
   return new Promise((resolve, reject) => {
     Interest.find({})
+      .populate({
+        path: 'articles',
+        model: 'Article',
+      })
       .then((interests) => {
         if (interests !== null) {
           resolve(interests);
@@ -83,6 +87,12 @@ export const updateInterestImage = (id, imageURL) => {
       if (imageURL != null) {
         interest.imageURL = imageURL;
       }
+      interest.save().then((result) => {
+        console.log(result);
+        resolve(result);
+      });
+    }).catch((error) => {
+      reject(error);
     });
   });
 };

@@ -32,4 +32,3 @@ router.route('/interest')
   .get((req, res) => {
     Interest.getInterests().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
-export default router;
