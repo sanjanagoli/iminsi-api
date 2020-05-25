@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import Interest from '../models/interest_model';
-import { RESPONSE_CODES } from '../constants';
+import RESPONSE_CODES from '../constants';
 
 export const createInterest = (body) => {
   return new Promise((resolve, reject) => {
