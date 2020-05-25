@@ -85,3 +85,16 @@ export const updateOrganization = (id, body) => {
       });
   });
 };
+
+
+export const updateOrganizationScore = (id, score) => {
+  return new Promise((resolve, reject) => {
+    Organization.findByIdAndUpdate({ _id: id }, { $inc: { score } })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+      });
+  });
+};

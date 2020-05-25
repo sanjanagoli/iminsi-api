@@ -96,5 +96,17 @@ export const replaceArticleInterestCategory = (id, body) => {
   });
 };
 
+export const updateArticleScore = (id, score) => {
+  return new Promise((resolve, reject) => {
+    Article.findByIdAndUpdate({ _id: id }, { $inc: { score } })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+      });
+  });
+};
+
 
 // have a bulk "update" method that can update the database with a bunch
