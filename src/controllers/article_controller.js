@@ -2,6 +2,7 @@
 import Article from '../models/article_model';
 import RESPONSE_CODES from '../constants/index';
 import { apiCategories, apiCountries } from '../constants/apiDetails';
+// import { apiCountries } from '../constants/apiDetails';
 
 const NewsAPI = require('newsapi');
 
@@ -120,6 +121,9 @@ export const dailyAPICall = () => {
 
   // isntantiate all arrays of promises here (corresponds to api)
   const newsApiPromises = [];
+  Object.values(apiCountries.NEWS_API).map((country) => {
+    console.log(country);
+  });
 
   // overarching function promise
   return new Promise((res, rej) => {
@@ -127,7 +131,7 @@ export const dailyAPICall = () => {
     newsApiPromises.push(
       new Promise((resolve, reject) => {
         apiCategories.NEWS_API.forEach((category) => {
-          apiCountries.NEWS_API.forEach((country) => {
+          Object.values(apiCountries.NEWS_API).map((country) => {
             newsapi.v2.topHeadlines({
               category,
               language: 'en',
@@ -145,26 +149,26 @@ export const dailyAPICall = () => {
       }),
     );
 
-    // newsApiPromises.push(
-    //   new Promise((resolve, reject) => {
-    //     apiCountries.NEWS_API.forEach((country) => {
-    //       apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
-    //         newsapi.v2.topHeadlines({
-    //           q: politicsQuery,
-    //           language: 'en',
-    //           country,
-    //         })
-    //           .then((response) => {
-    //             console.log(response);
-    //             resolve(response);
-    //           })
-    //           .catch((err) => {
-    //             reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
-    //           });
-    //       });
-    //     });
-    //   }),
-    // );
+    newsApiPromises.push(
+      new Promise((resolve, reject) => {
+        Object.values(apiCountries.NEWS_API).map((country) => {
+          apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+            newsapi.v2.topHeadlines({
+              q: politicsQuery,
+              language: 'en',
+              country,
+            })
+              .then((response) => {
+                console.log(response);
+                resolve(response);
+              })
+              .catch((err) => {
+                reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+              });
+          });
+        });
+      }),
+    );
 
     // handle other apis
 
