@@ -1,6 +1,12 @@
 /* eslint-disable prefer-promise-reject-errors */
 import Article from '../models/article_model';
 import RESPONSE_CODES from '../constants/index';
+import { apiCategories, apiCountries } from '../constants/apiDetails';
+
+const NewsAPI = require('newsapi');
+
+require('dotenv').config(); // load environment variables
+
 // var ObjectId = require('mongodb').ObjectID;
 
 export const createArticle = (body) => {
@@ -104,6 +110,72 @@ export const updateArticleScore = (id, score) => {
       })
       .catch((err) => {
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+      });
+  });
+};
+
+
+export const dailyAPICall = () => {
+  const newsapi = new NewsAPI(process.env.API_NEWS_KEY);
+
+  // isntantiate all arrays of promises here (corresponds to api)
+  const newsApiPromises = [];
+
+  // overarching function promise
+  return new Promise((res, rej) => {
+    // handle newsapi
+    newsApiPromises.push(
+      new Promise((resolve, reject) => {
+        apiCategories.NEWS_API.forEach((category) => {
+          apiCountries.NEWS_API.forEach((country) => {
+            newsapi.v2.topHeadlines({
+              category,
+              language: 'en',
+              country,
+            })
+              .then((response) => {
+                console.log(response);
+                resolve(response);
+              })
+              .catch((err) => {
+                reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+              });
+          });
+        });
+      }),
+    );
+
+    // newsApiPromises.push(
+    //   new Promise((resolve, reject) => {
+    //     apiCountries.NEWS_API.forEach((country) => {
+    //       apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+    //         newsapi.v2.topHeadlines({
+    //           q: politicsQuery,
+    //           language: 'en',
+    //           country,
+    //         })
+    //           .then((response) => {
+    //             console.log(response);
+    //             resolve(response);
+    //           })
+    //           .catch((err) => {
+    //             reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+    //           });
+    //       });
+    //     });
+    //   }),
+    // );
+
+    // handle other apis
+
+
+    // put every api promise array into the .all function, this resolves, and rejects for daily api call
+    Promise.all(newsApiPromises)
+      .then(() => {
+        res('Successfully got all the data');
+      })
+      .catch((error) => {
+        rej({ code: RESPONSE_CODES.API_METHOD_ERROR, error });
       });
   });
 };

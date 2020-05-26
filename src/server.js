@@ -65,7 +65,17 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
+
 // test calls
+
+
+Article.dailyAPICall()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // const article = {
 //   title: 'First Article',
@@ -91,13 +101,13 @@ console.log(`listening on: ${port}`);
 //     console.log(err);
 //   });
 
-Article.getArticles()
-  .then((res) => {
-    console.log(res[0]);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// Article.getArticles()
+//   .then((res) => {
+//     console.log(res[0]);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // test article
 
