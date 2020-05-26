@@ -77,3 +77,6 @@ router.route('/organizations/:id')
   .put((req, res) => {
     Organization.incrementOrganizationScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
+
+
+export default router;
