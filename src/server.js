@@ -5,8 +5,8 @@ import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
-import createArticle from './controllers/article_controller';
-import * as Article from './controllers/article_controller';
+// import createArticle from './controllers/article_controller';
+// import * as Article from './controllers/article_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -68,7 +68,7 @@ console.log(`listening on: ${port}`);
 
 // test calls
 
-const { extract } = require('article-parser');
+// const { extract } = require('article-parser');
 
 // Article.dailyAPICall()
 //   .then((res) => {

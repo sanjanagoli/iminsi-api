@@ -137,7 +137,6 @@ export const dailyAPICall = () => {
               category,
               language: 'en',
               country,
-              q: 'money',
             })
               .then((response) => {
                 // console.log(response);
@@ -152,26 +151,27 @@ export const dailyAPICall = () => {
       }),
     );
 
-    // newsApiPromises.push(
-    //   new Promise((resolve, reject) => {
-    //     Object.values(apiCountries.NEWS_API).map((country) => {
-    //       apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
-    //         newsapi.v2.topHeadlines({
-    //           q: politicsQuery,
-    //           language: 'en',
-    //           country,
-    //         })
-    //           .then((response) => {
-    //             console.log(response);
-    //             resolve(response);
-    //           })
-    //           .catch((err) => {
-    //             reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
-    //           });
-    //       });
-    //     });
-    //   }),
-    // );
+    newsApiPromises.push(
+      new Promise((resolve, reject) => {
+        Object.values(apiCountries.NEWS_API).map((country) => {
+          apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+            newsapi.v2.topHeadlines({
+              q: politicsQuery,
+              language: 'en',
+              country,
+            })
+              .then((response) => {
+                // console.log(response);
+                newsApiResponses.push(response);
+                resolve(response);
+              })
+              .catch((err) => {
+                reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+              });
+          });
+        });
+      }),
+    );
 
     // handle other apis
 
