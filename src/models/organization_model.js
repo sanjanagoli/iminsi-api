@@ -8,6 +8,12 @@ const OrganizationSchema = new Schema({
   orgName: String,
   score: Number,
   sourceUrl: String,
+  articles: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Article',
+    },
+  ],
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },

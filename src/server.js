@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-// import * as Article from './controllers/article_controller';
+import * as Article from './controllers/article_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -70,45 +70,47 @@ console.log(`listening on: ${port}`);
 
 // const { extract } = require('article-parser');
 
-// Article.dailyAPICall()
-//   .then((res) => {
-//     // console.log(res);
-//     const artcls = res;
-//     // console.log(`here ${artcls}`);
+Article.dailyAPICall()
+  .then((res) => {
+    console.log(res);
+    const artcls = res;
+    console.log(`here ${artcls}`);
+  });
 
-//     // the response from dailAPICall is an array of objects that hold the News Api Response
-//     artcls.forEach((artObject) => {
-//       // array of articles in each object
-//       artObject.articles.forEach((art) => {
-//         const artcl = {
-//           title: art.title,
-//           imageURL: art.urlToImage,
-//           urlSource: art.url,
-//           date: new Date(art.publishedAt),
-//           author: art.author || '',
-//           content: '',
-//         };
-//         extract(art.url).then((article) => {
-//           // updating the artcl with html content
-//           artcl['content'] = article.content;
 
-//           // creating new article with above fields
-//           Article.createArticle(artcl)
-//             .then((res) => {
-//               console.log(res);
-//             })
-//             .catch((error) => {
-//               console.log(error);
-//             });
-//         }).catch((err) => {
-//           console.log(err);
-//         });
+// the response from dailAPICall is an array of objects that hold the News Api Response
+//   artcls.forEach((artObject) => {
+//     // array of articles in each object
+//     artObject.articles.forEach((art) => {
+//       const artcl = {
+//         title: art.title,
+//         imageURL: art.urlToImage,
+//         urlSource: art.url,
+//         date: new Date(art.publishedAt),
+//         author: art.author || '',
+//         content: '',
+//       };
+//       extract(art.url).then((article) => {
+//         // updating the artcl with html content
+//         artcl['content'] = article.content;
+
+//         // creating new article with above fields
+//         Article.createArticle(artcl)
+//           .then((res) => {
+//             console.log(res);
+//           })
+//           .catch((error) => {
+//             console.log(error);
+//           });
+//       }).catch((err) => {
+//         console.log(err);
 //       });
 //     });
-//   })
-//   .catch((err) => {
-//     console.log(err);
 //   });
+// })
+// .catch((err) => {
+//   console.log(err);
+// });
 
 // const article = {
 //   title: 'First Article',

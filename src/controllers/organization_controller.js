@@ -1,4 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
+import mongoose from 'mongoose';
 import Organization from '../models/organization_model';
 import RESPONSE_CODES from '../constants/index';
 // var ObjectId = require('mongodb').ObjectID;
@@ -25,6 +26,39 @@ export const deleteOrganization = (id) => {
       .then((c) => {
         resolve(c);
       }).catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const addArticleToNewsOrganization = (organizationId, article) => {
+  return new Promise((resolve, reject) => {
+    Organization.exists({ id: organizationId })
+      .then((response) => {
+        if (response) {
+          Organization.findById(organizationId, { $addToSet: { articles: new mongoose.Schema.Types.ObjectId(article.id) } }, { new: true, upsert: true })
+            .then((interest) => {
+              if (interest !== null) {
+                resolve(interest);
+              } else {
+                reject({ code: RESPONSE_CODES.NOT_FOUND });
+              }
+            })
+            .catch((error) => {
+              console.log('populate failed');
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+            });
+        } else {
+          const organization = {
+            orgName: '',
+            score: 0,
+            sourceUrl: organizationId,
+          };
+          createOrganization(organization);
+        }
+      })
+      .catch((error) => {
+        console.log('doesnt exist');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
