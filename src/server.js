@@ -70,12 +70,12 @@ console.log(`listening on: ${port}`);
 
 // const { extract } = require('article-parser');
 
-Article.dailyAPICall()
-  .then((res) => {
-    console.log(res);
-    const artcls = res;
-    console.log(`here ${artcls}`);
-  });
+// Article.dailyAPICall()
+//   .then((res) => {
+//     console.log(res);
+//     const artcls = res;
+//     console.log(`here ${artcls}`);
+//   });
 
 
 // the response from dailAPICall is an array of objects that hold the News Api Response

@@ -122,9 +122,30 @@ export const populateDatabases = (data, category, country) => {
 
 
 export const populateAll = (category, country, artcl) => {
-  Interest.addArticleToInterest(category, artcl);
-  Interest.addArticleToInterest(country, artcl);
-  const organizationId = artcl.substring('://', '/');
-  Organization.addArticleToNewsOrganization(organizationId, artcl);
-  Organization.addArticleToNewsOrganization(organizationId, artcl);
+  Interest.addArticleToInterest(category, artcl)
+    .then((response) => {
+      Article.addInterestToArticle(artcl.id, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  Interest.addArticleToInterest(country, artcl)
+    .then((response) => {
+      // adds interest to article as well
+      Article.addInterestToArticle(artcl.id, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  const organizationBaseUrl = artcl.urlSource.substring('://', '/');
+  Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl)
+    .then((org) => {
+      // adds news organization to article based on the newly created/updated organization
+      Article.updateArticleOrganization(artcl.id, org);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+  // Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl);
 };

@@ -36,10 +36,10 @@ export const addArticleToNewsOrganization = (organizationId, article) => {
     Organization.exists({ id: organizationId })
       .then((response) => {
         if (response) {
-          Organization.findById(organizationId, { $addToSet: { articles: new mongoose.Schema.Types.ObjectId(article.id) } }, { new: true, upsert: true })
-            .then((interest) => {
-              if (interest !== null) {
-                resolve(interest);
+          Organization.findById(organizationId, { $addToSet: { articles: new mongoose.Schema.Types.ObjectId(article.id) } })
+            .then((org) => {
+              if (org !== null) {
+                resolve(org);
               } else {
                 reject({ code: RESPONSE_CODES.NOT_FOUND });
               }
@@ -54,7 +54,13 @@ export const addArticleToNewsOrganization = (organizationId, article) => {
             score: 0,
             sourceUrl: organizationId,
           };
-          createOrganization(organization);
+          createOrganization(organization)
+            .then((org) => {
+              resolve(org);
+            })
+            .catch((error) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+            });
         }
       })
       .catch((error) => {

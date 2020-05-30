@@ -80,6 +80,40 @@ export const getArticle = (id) => {
   });
 };
 
+export const addInterestToArticle = (articleId, interest) => {
+  return new Promise((resolve, reject) => {
+    Article.findByIdAndUpdate(articleId, { $addToSet: { interestCategories: new mongoose.Schema.Types.ObjectId(interest.id) } })
+      .then((article) => {
+        if (article !== null) {
+          resolve(article);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        console.log('populate failed');
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const updateArticleOrganization = (articleId, organization) => {
+  return new Promise((resolve, reject) => {
+    Article.findByIdAndUpdate(articleId, { newsOrganization: new mongoose.Schema.Types.ObjectId(organization.id) })
+      .then((article) => {
+        if (article !== null) {
+          resolve(article);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        console.log('adding organization failed');
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
 export const replaceArticleInterestCategory = (id, body) => {
   return new Promise((resolve, reject) => {
     Article.findById(id)
