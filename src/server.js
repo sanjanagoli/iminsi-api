@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 import * as Article from './controllers/article_controller';
+import * as ApiController from './controllers/api_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -14,6 +15,7 @@ require('dotenv').config(); // load environment variables
 
 const mongoURI = process.env.MONGODB_URI;
 mongoose.connect(mongoURI);
+mongoose.set('useFindAndModify', false);
 
 // mongoose.connect(mongoURI);
 
@@ -69,6 +71,14 @@ console.log(`listening on: ${port}`);
 // test calls
 
 // const { extract } = require('article-parser');
+
+ApiController.dailyAPICall()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // Article.dailyAPICall()
 //   .then((res) => {

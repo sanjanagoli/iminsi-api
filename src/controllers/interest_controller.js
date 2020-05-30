@@ -29,7 +29,7 @@ export const deleteInterest = (id) => {
 
 export const addArticleToInterest = (interestName, article) => {
   return new Promise((resolve, reject) => {
-    Interest.findOneAndUpdate({ interestName }, { $addToSet: { articles: new mongoose.Schema.Types.ObjectId(article.id) } }, { new: true, upsert: true })
+    Interest.findOneAndUpdate({ interestName }, { $addToSet: { articles: new mongoose.Types.ObjectId(article.id) } }, { new: true, upsert: true })
       .then((interest) => {
         if (interest !== null) {
           resolve(interest);

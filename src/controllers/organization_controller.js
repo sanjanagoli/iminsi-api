@@ -12,6 +12,7 @@ export const createOrganization = (body) => {
       orgName: body.orgName,
       score: body.score,
       sourceUrl: body.sourceUrl,
+      articles: body.articles || [],
     }).then((result) => {
       resolve(result);
     }).catch((error) => {
@@ -31,12 +32,12 @@ export const deleteOrganization = (id) => {
   });
 };
 
-export const addArticleToNewsOrganization = (organizationId, article) => {
+export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
   return new Promise((resolve, reject) => {
-    Organization.exists({ id: organizationId })
+    Organization.exists({ sourceUrl: organizationBaseUrl })
       .then((response) => {
         if (response) {
-          Organization.findById(organizationId, { $addToSet: { articles: new mongoose.Schema.Types.ObjectId(article.id) } })
+          Organization.findOneAndUpdate({ sourceUrl: organizationBaseUrl }, { $addToSet: { articles: new mongoose.Types.ObjectId(article.id) } })
             .then((org) => {
               if (org !== null) {
                 resolve(org);
@@ -49,10 +50,12 @@ export const addArticleToNewsOrganization = (organizationId, article) => {
               reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
             });
         } else {
+          const tempArticleId = new mongoose.Types.ObjectId(article.id);
           const organization = {
             orgName: '',
             score: 0,
-            sourceUrl: organizationId,
+            sourceUrl: organizationBaseUrl,
+            articles: [ tempArticleId ],
           };
           createOrganization(organization)
             .then((org) => {

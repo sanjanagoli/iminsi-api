@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable prefer-promise-reject-errors */
+import mongoose from 'mongoose';
 import Article from '../models/article_model';
 import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
@@ -82,7 +83,7 @@ export const getArticle = (id) => {
 
 export const addInterestToArticle = (articleId, interest) => {
   return new Promise((resolve, reject) => {
-    Article.findByIdAndUpdate(articleId, { $addToSet: { interestCategories: new mongoose.Schema.Types.ObjectId(interest.id) } })
+    Article.findByIdAndUpdate(articleId, { $addToSet: { interestCategories: new mongoose.Types.ObjectId(interest.id) } })
       .then((article) => {
         if (article !== null) {
           resolve(article);
@@ -99,7 +100,7 @@ export const addInterestToArticle = (articleId, interest) => {
 
 export const updateArticleOrganization = (articleId, organization) => {
   return new Promise((resolve, reject) => {
-    Article.findByIdAndUpdate(articleId, { newsOrganization: new mongoose.Schema.Types.ObjectId(organization.id) })
+    Article.findByIdAndUpdate(articleId, { newsOrganization: new mongoose.Types.ObjectId(organization.id) })
       .then((article) => {
         if (article !== null) {
           resolve(article);
