@@ -12,7 +12,7 @@ import * as Article from './controllers/article_controller';
 // DB Setup
 require('dotenv').config(); // load environment variables
 
-const mongoURI = process.env.MONGODB_URI;
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
 
 // mongoose.connect(mongoURI);

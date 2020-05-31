@@ -58,7 +58,7 @@ router.route('/user')
     User.getUsers().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .post((req, res) => {
-    User.createUser(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    User.signUp(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 router.route('/user/:id')
@@ -67,6 +67,9 @@ router.route('/user/:id')
   })
   .delete((req, res) => {
     User.deleteUser(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .post((req, res) => {
+    User.signIn(req.params.id, req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .put((req, res) => {
     User.updateUser(req.params.id, req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
