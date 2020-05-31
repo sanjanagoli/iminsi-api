@@ -15,25 +15,25 @@ export const signIn = (req, res, next) => {
 // handle for array of references to interests, articles, and analytics potentially
 // eslint-disable-next-line consistent-return
 export const signUp = (req, res, next) => {
-  const { username } = req.body;
-  const { country } = req.body;
-  const { password } = req.body;
+  const username = req.body.username;
+  const country = req.body.country || '';
+  const password = req.body.password;
 
-  if (!username || !password || !country) {
-    return res.status(422).send('You must provide a username, country and a password');
+  if (!username || !password) {
+    return res.status(422).send('You must provide a username and a password');
   }
 
   // mongo query to find if a user already exists with this username
-  User.findOne({ username: req.body.username })
+  User.findOne({ username })
     // eslint-disable-next-line consistent-return
     .then((result) => {
       if (result) {
         return res.status(422).send('Username already exists');
       } else {
         const user = new User({
-          username: req.body.username,
-          country: req.body.country,
-          password: req.body.password,
+          username,
+          country,
+          password,
         });
         // Save the new User object
         return user.save()
