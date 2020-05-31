@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable prefer-promise-reject-errors */
 import dotenv from 'dotenv';
 import jwt from 'jwt-simple';

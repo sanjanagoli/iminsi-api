@@ -57,10 +57,10 @@ router.route('/interest')
 router.route('/user')
   .get((req, res) => {
     User.getUsers().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
-  })
-  // .post((req, res) => {
-  //   User.signUp(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
-  // });
+  });
+// .post((req, res) => {
+//   User.signUp(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+// });
 
 router.route('/user/:id')
   .get((req, res) => {
