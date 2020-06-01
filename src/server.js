@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-import * as Article from './controllers/article_controller';
+// import * as Article from './controllers/article_controller';
 import * as ApiController from './controllers/api_controller';
 // import * as Interest from './controllers/interest_controller';
 

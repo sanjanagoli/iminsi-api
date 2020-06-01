@@ -11,20 +11,32 @@ require('dotenv').config(); // load environment variables
 
 export const createArticle = (body) => {
   return new Promise((resolve, reject) => {
-    Article.create({
-      title: body.title,
-      tags: body.tags,
-      content: body.content,
-      imageURL: body.imageURL,
-      location: body.location,
-      urlSource: body.urlSource,
-      author: body.author,
-      date: body.date,
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-    });
+    Article.exists({ urlSource: body.urlSource })
+      .then((response) => {
+        // only create a new article if it doesn't already exist (as identified by the url)
+        if (!response) {
+          Article.create({
+            title: body.title,
+            tags: body.tags,
+            content: body.content,
+            imageURL: body.imageURL,
+            location: body.location,
+            urlSource: body.urlSource,
+            author: body.author,
+            date: body.date,
+          }).then((result) => {
+            resolve(result);
+          }).catch((error) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+          });
+        } else {
+          resolve(null);
+        }
+      })
+      .catch((error) => {
+        console.log('error creating article');
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
   });
 };
 

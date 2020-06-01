@@ -55,7 +55,7 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
             orgName: '',
             score: 0,
             sourceUrl: organizationBaseUrl,
-            articles: [ tempArticleId ],
+            articles: [tempArticleId],
           };
           createOrganization(organization)
             .then((org) => {

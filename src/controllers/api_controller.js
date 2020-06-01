@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-use-before-define */
 /* eslint-disable array-callback-return */
 /* eslint-disable prefer-promise-reject-errors */
@@ -20,9 +21,9 @@ export const dailyAPICall = () => {
   // isntantiate all arrays of promises here (corresponds to api)
   const newsApiPromises = [];
   const newsApiResponses = [];
-  Object.keys(apiCountries.NEWS_API).map((countryName) => {
-    console.log(countryName + " " + apiCountries.NEWS_API[countryName]);
-  });
+  // Object.keys(apiCountries.NEWS_API).map((countryName) => {
+  //   console.log(countryName + " " + apiCountries.NEWS_API[countryName]);
+  // });
 
   // overarching function promise
   return new Promise((res, rej) => {
@@ -54,27 +55,27 @@ export const dailyAPICall = () => {
       }),
     );
 
-    // newsApiPromises.push(
-    //   new Promise((resolve, reject) => {
-    //     Object.values(apiCountries.NEWS_API).map((country) => {
-    //       apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
-    //         newsapi.v2.topHeadlines({
-    //           q: politicsQuery,
-    //           language: 'en',
-    //           country,
-    //         })
-    //           .then((response) => {
-    //             // console.log(response);
-    //             newsApiResponses.push(response);
-    //             resolve(response);
-    //           })
-    //           .catch((err) => {
-    //             reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
-    //           });
-    //       });
-    //     });
-    //   }),
-    // );
+    newsApiPromises.push(
+      new Promise((resolve, reject) => {
+        Object.values(apiCountries.NEWS_API).map((country) => {
+          apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+            newsapi.v2.topHeadlines({
+              q: politicsQuery,
+              language: 'en',
+              country,
+            })
+              .then((response) => {
+                // console.log(response);
+                newsApiResponses.push(response);
+                resolve(response);
+              })
+              .catch((err) => {
+                reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+              });
+          });
+        });
+      }),
+    );
 
     // handle other apis
 
@@ -92,12 +93,12 @@ export const dailyAPICall = () => {
 
 // helper function
 const findNthOccurence = (string, nth, char) => {
-  let index = 0
+  let index = 0;
   for (let i = 0; i < nth; i += 1) {
-    if (index !== -1) index = string.indexOf(char, index + 1)
+    if (index !== -1) index = string.indexOf(char, index + 1);
   }
-  return index
-}
+  return index;
+};
 
 export const populateDatabases = (data, category, country) => {
   // the response from dailAPICall is an array of objects that hold the News Api Response
@@ -121,12 +122,13 @@ export const populateDatabases = (data, category, country) => {
         .then((res) => {
           console.log(res);
           // now we should populate interest arrays and organization arrays with the added article
-
-          populateAll(category, country, res)
-            .catch((error) => {
-              console.log('populating all interests and news org failed');
-              console.log(error);
-            });
+          if (res != null) {
+            populateAll(category, country, res)
+              .catch((error) => {
+                console.log('populating all interests and news org failed');
+                console.log(error);
+              });
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -162,8 +164,8 @@ export const populateAll = (category, country, artcl) => {
         // console.log(err);
         rej({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
       });
-      
-    const organizationBaseUrl = artcl.urlSource.substring(artcl.urlSource.indexOf('://')+3, findNthOccurence(artcl.urlSource, 3, '/'));
+
+    const organizationBaseUrl = artcl.urlSource.substring(artcl.urlSource.indexOf('://') + 3, findNthOccurence(artcl.urlSource, 3, '/'));
     Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl)
       .then((org) => {
         // adds news organization to article based on the newly created/updated organization
