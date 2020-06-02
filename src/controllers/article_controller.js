@@ -23,8 +23,8 @@ export const createArticle = (body) => {
             location: body.location,
             urlSource: body.urlSource,
             author: body.author,
-            date: new Date(),
-            score: body.score || 0,
+            date: body.date || new Date(),
+            score: body.score || 1,
           }).then((result) => {
             resolve(result);
           }).catch((error) => {
@@ -59,6 +59,10 @@ export const getArticles = () => {
       .populate({
         path: 'interestCategories',
         model: 'Interest',
+      })
+      .populate({
+        path: 'newsOrganization',
+        model: 'Organization',
       })
       .then((articles) => {
         if (articles !== null) {
@@ -164,9 +168,10 @@ export const updateArticleScore = (id, score) => {
 
 export const getVerifiedList = () => {
   return new Promise((resolve, reject) => {
+    // populate
     getArticles()
       .then((articles) => {
-        articles.sort(((a, b) => { return (b.score - a.score); }));
+        articles.sort(((a, b) => { return (b.score * b.newsOrganization.score - a.score * a.newsOrganization.score); }));
         if (articles.length < 50) {
           resolve(articles.splice(0, articles.length));
         } else {

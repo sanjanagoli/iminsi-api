@@ -10,7 +10,7 @@ export const createOrganization = (body) => {
   return new Promise((resolve, reject) => {
     Organization.create({
       orgName: body.orgName,
-      score: body.score,
+      score: 5,
       sourceUrl: body.sourceUrl,
       articles: body.articles || [],
     }).then((result) => {
