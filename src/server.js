@@ -6,8 +6,8 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-// import * as Article from './controllers/article_controller';
-import * as ApiController from './controllers/api_controller';
+import * as Article from './controllers/article_controller';
+// import * as ApiController from './controllers/api_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -67,18 +67,123 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-
-// test calls
-
-// const { extract } = require('article-parser');
-
-ApiController.dailyAPICall()
+Article.getVerifiedList()
   .then((res) => {
     console.log(res);
   })
   .catch((err) => {
     console.log(err);
   });
+// test calls
+
+// const { extract } = require('article-parser');
+// const article = {
+//   title: 'First Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   urlSource: 'String2',
+//   author: 'String',
+//   date: 'Date',
+//   score: 5,
+// };
+
+// const article2 = {
+//   title: 'second Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'bte',
+//   location: 'String',
+//   urlSource: 'String abcde',
+//   author: 'String',
+//   date: 'Date',
+//   score: 4,
+// };
+
+// const article3 = {
+//   title: 'third Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'more bte',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'more btw',
+//   author: 'String',
+//   date: 'Date',
+//   score: 3,
+// };
+
+// const article4 = {
+//   title: 'fourth Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'ok another one',
+//   author: 'String',
+//   date: 'Date',
+//   score: 2,
+// };
+
+// const article5 = {
+//   title: 'fifth Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'last one',
+//   author: 'String',
+//   date: 'Date',
+//   score: 1,
+// };
+
+
+// Article.createArticle((article))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article2))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article3))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article4))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article5))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// ApiController.dailyAPICall()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // Article.dailyAPICall()
 //   .then((res) => {

@@ -23,10 +23,13 @@ export const createArticle = (body) => {
             location: body.location,
             urlSource: body.urlSource,
             author: body.author,
-            date: body.date,
+            date: new Date(),
+            score: body.score || 0,
           }).then((result) => {
             resolve(result);
           }).catch((error) => {
+            console.log('error creating article');
+
             reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
           });
         } else {
@@ -34,7 +37,6 @@ export const createArticle = (body) => {
         }
       })
       .catch((error) => {
-        console.log('error creating article');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -160,5 +162,19 @@ export const updateArticleScore = (id, score) => {
   });
 };
 
-
-// have a bulk "update" method that can update the database with a bunch
+export const getVerifiedList = () => {
+  return new Promise((resolve, reject) => {
+    getArticles()
+      .then((articles) => {
+        articles.sort(((a, b) => { return (b.score - a.score); }));
+        if (articles.length < 50) {
+          resolve(articles.splice(0, articles.length));
+        } else {
+          resolve(articles.splice(0, 50));
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
