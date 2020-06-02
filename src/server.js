@@ -6,13 +6,14 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-import * as Article from './controllers/article_controller';
+// import * as Article from './controllers/article_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
 require('dotenv').config(); // load environment variables
 
-const mongoURI = process.env.MONGODB_URI;
+// const mongoURI = 'mongodb://localhost/iminsi';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
 
 // mongoose.connect(mongoURI);
@@ -91,13 +92,6 @@ console.log(`listening on: ${port}`);
 //     console.log(err);
 //   });
 
-Article.getArticles()
-  .then((res) => {
-    console.log(res[0]);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 // test article
 
