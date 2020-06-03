@@ -8,16 +8,24 @@ import RESPONSE_CODES from '../constants/index';
 // handle for array of references to interests, articles, and analytics potentially
 export const createOrganization = (body) => {
   return new Promise((resolve, reject) => {
-    Organization.create({
-      orgName: body.orgName,
-      score: 5,
-      sourceUrl: body.sourceUrl,
-      articles: body.articles || [],
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-    });
+    Organization.exists({ sourceUrl: body.sourceUrl })
+      .then((response) => {
+        if (!response) {
+          Organization.create({
+            orgName: body.orgName,
+            score: 1,
+            sourceUrl: body.sourceUrl,
+            articles: body.articles || [],
+          }).then((result) => {
+            resolve(result);
+          }).catch((error) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+          });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
   });
 };
 
