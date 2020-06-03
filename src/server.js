@@ -14,7 +14,8 @@ import apiRouter from './router';
 // DB Setup
 require('dotenv').config(); // load environment variables
 
-const mongoURI = process.env.MONGODB_URI;
+// const mongoURI = 'mongodb://localhost/iminsi';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
 mongoose.set('useFindAndModify', false);
 

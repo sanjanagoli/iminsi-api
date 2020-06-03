@@ -3,6 +3,7 @@ import * as Article from './controllers/article_controller';
 import * as Interest from './controllers/interest_controller';
 import * as Organization from './controllers/organization_controller';
 import * as User from './controllers/user_controller';
+import { requireSignin } from './services/passportService';
 
 const router = Router();
 
@@ -56,10 +57,10 @@ router.route('/interest')
 router.route('/user')
   .get((req, res) => {
     User.getUsers().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
-  })
-  .post((req, res) => {
-    User.createUser(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
+// .post((req, res) => {
+//   User.signUp(req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+// });
 
 router.route('/user/:id')
   .get((req, res) => {
@@ -68,6 +69,9 @@ router.route('/user/:id')
   .delete((req, res) => {
     User.deleteUser(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
+  // .post((req, res) => {
+  //   User.signIn(req.params.id, req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  // })
   .put((req, res) => {
     User.updateUser(req.params.id, req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
@@ -78,5 +82,7 @@ router.route('/organizations/:id')
     Organization.incrementOrganizationScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
+router.post('/signin', requireSignin, User.signIn);
+router.post('/signup', User.signUp);
 
 export default router;

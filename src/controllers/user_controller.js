@@ -1,24 +1,55 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable prefer-promise-reject-errors */
+import dotenv from 'dotenv';
+import jwt from 'jwt-simple';
 import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // var ObjectId = require('mongodb').ObjectID;
 
+// t2ekdi mn hada
+dotenv.config({ silent: true });
+
+export const signIn = (req, res, next) => {
+  res.send({ token: tokenForUser(req.user) });
+};
 
 // handle for array of references to interests, articles, and analytics potentially
-export const createUser = (body) => {
-  return new Promise((resolve, reject) => {
-    User.create({
-      firstName: body.firstName,
-      lastName: body.lastName,
-      country: body.country,
-      profPicture: body.profPicture,
-      title: body.title,
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+// eslint-disable-next-line consistent-return
+export const signUp = (req, res, next) => {
+  const username = req.body.username;
+  const country = req.body.country || '';
+  const password = req.body.password;
+
+  if (!username || !password) {
+    return res.status(422).send('You must provide a username and a password');
+  }
+
+  // mongo query to find if a user already exists with this username
+  User.findOne({ username })
+    // eslint-disable-next-line consistent-return
+    .then((result) => {
+      if (result) {
+        return res.status(422).send('Username already exists');
+      } else {
+        const user = new User({
+          username,
+          country,
+          password,
+        });
+        // Save the new User object
+        return user.save()
+          .then((result2) => {
+            // return a token same as in signin
+            res.send({ token: tokenForUser(result2) });
+          })
+          .catch((error) => {
+            res.status(500).json({ error });
+          });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
     });
-  });
 };
 
 export const deleteUser = (id) => {
@@ -108,3 +139,10 @@ export const updateUser = (id, body) => {
 };
 
 // have a bulk "update" method that can update the database with a bunch
+
+
+// encodes a new token for a user object
+function tokenForUser(user) {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
+}
