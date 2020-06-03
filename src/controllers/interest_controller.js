@@ -5,14 +5,22 @@ import RESPONSE_CODES from '../constants';
 
 export const createInterest = (body) => {
   return new Promise((resolve, reject) => {
-    Interest.create({
-      interestName: body.interestName,
-      imageURL: body.imageURL,
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-    });
+    Interest.exists({ interestName: body.interestName })
+      .then((response) => {
+        if (!response) {
+          Interest.create({
+            interestName: body.interestName,
+            imageURL: body.imageURL,
+          }).then((result) => {
+            resolve(result);
+          }).catch((error) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+          });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
   });
 };
 
