@@ -1,4 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
+import mongoose from 'mongoose';
 import Organization from '../models/organization_model';
 import RESPONSE_CODES from '../constants/index';
 // var ObjectId = require('mongodb').ObjectID;
@@ -7,15 +8,24 @@ import RESPONSE_CODES from '../constants/index';
 // handle for array of references to interests, articles, and analytics potentially
 export const createOrganization = (body) => {
   return new Promise((resolve, reject) => {
-    Organization.create({
-      orgName: body.orgName,
-      score: body.score,
-      sourceUrl: body.sourceUrl,
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-    });
+    Organization.exists({ sourceUrl: body.sourceUrl })
+      .then((response) => {
+        if (!response) {
+          Organization.create({
+            orgName: body.orgName,
+            score: 1,
+            sourceUrl: body.sourceUrl,
+            articles: body.articles || [],
+          }).then((result) => {
+            resolve(result);
+          }).catch((error) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+          });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
   });
 };
 
@@ -25,6 +35,48 @@ export const deleteOrganization = (id) => {
       .then((c) => {
         resolve(c);
       }).catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
+  return new Promise((resolve, reject) => {
+    Organization.exists({ sourceUrl: organizationBaseUrl })
+      .then((response) => {
+        if (response) {
+          console.log('news org exists');
+          Organization.findOneAndUpdate({ sourceUrl: organizationBaseUrl }, { $addToSet: { articles: new mongoose.Types.ObjectId(article.id) } })
+            .then((org) => {
+              if (org !== null) {
+                resolve(org);
+              } else {
+                reject({ code: RESPONSE_CODES.NOT_FOUND });
+              }
+            })
+            .catch((error) => {
+              console.log('populate failed');
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+            });
+        } else {
+          const tempArticleId = new mongoose.Types.ObjectId(article.id);
+          const organization = {
+            orgName: '',
+            score: 1,
+            sourceUrl: organizationBaseUrl,
+            articles: [tempArticleId],
+          };
+          createOrganization(organization)
+            .then((org) => {
+              resolve(org);
+            })
+            .catch((error) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+            });
+        }
+      })
+      .catch((error) => {
+        console.log('doesnt exist');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

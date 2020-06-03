@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 // import * as Article from './controllers/article_controller';
+// import * as Organization from './controllers/organization_controller';
+// import * as ApiController from './controllers/api_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -15,6 +17,7 @@ require('dotenv').config(); // load environment variables
 // const mongoURI = 'mongodb://localhost/iminsi';
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/iminsi';
 mongoose.connect(mongoURI);
+mongoose.set('useFindAndModify', false);
 
 // mongoose.connect(mongoURI);
 
@@ -66,7 +69,187 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
+// const art = {
+//   id: '5ed719eafc51317658d50deb',
+// };
+
+// Organization.addArticleToNewsOrganization('www.football.london', art)
+//   .then((org) => {
+//     console.log(org);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// Organization.createOrganization((org))
+//   .then((organization) => {
+//     console.log(organization);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// Article.getVerifiedList()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+
 // test calls
+
+// const { extract } = require('article-parser');
+// const article = {
+//   title: 'First Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   urlSource: 'String2',
+//   author: 'String',
+//   date: 'Date',
+//   score: 5,
+// };
+
+// const article2 = {
+//   title: 'second Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'bte',
+//   location: 'String',
+//   urlSource: 'String abcde',
+//   author: 'String',
+//   date: 'Date',
+//   score: 4,
+// };
+
+// const article3 = {
+//   title: 'third Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'more bte',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'more btw',
+//   author: 'String',
+//   date: 'Date',
+//   score: 3,
+// };
+
+// const article4 = {
+//   title: 'fourth Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'ok another one',
+//   author: 'String',
+//   date: 'Date',
+//   score: 2,
+// };
+
+// const article5 = {
+//   title: 'fifth Article',
+//   tags: 'String',
+//   content: 'String',
+//   imageURL: 'String',
+//   location: 'String',
+//   source: 'String',
+//   urlSource: 'last one',
+//   author: 'String',
+//   date: 'Date',
+//   score: 1,
+// };
+
+
+// Article.createArticle((article))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article2))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article3))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article4))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// Article.createArticle((article5))
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// ApiController.dailyAPICall()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// Article.dailyAPICall()
+//   .then((res) => {
+//     console.log(res);
+//     const artcls = res;
+//     console.log(`here ${artcls}`);
+//   });
+
+
+// the response from dailAPICall is an array of objects that hold the News Api Response
+//   artcls.forEach((artObject) => {
+//     // array of articles in each object
+//     artObject.articles.forEach((art) => {
+//       const artcl = {
+//         title: art.title,
+//         imageURL: art.urlToImage,
+//         urlSource: art.url,
+//         date: new Date(art.publishedAt),
+//         author: art.author || '',
+//         content: '',
+//       };
+//       extract(art.url).then((article) => {
+//         // updating the artcl with html content
+//         artcl['content'] = article.content;
+
+//         // creating new article with above fields
+//         Article.createArticle(artcl)
+//           .then((res) => {
+//             console.log(res);
+//           })
+//           .catch((error) => {
+//             console.log(error);
+//           });
+//       }).catch((err) => {
+//         console.log(err);
+//       });
+//     });
+//   });
+// })
+// .catch((err) => {
+//   console.log(err);
+// });
 
 // const article = {
 //   title: 'First Article',
@@ -92,12 +275,19 @@ console.log(`listening on: ${port}`);
 //     console.log(err);
 //   });
 
+// Article.getArticles()
+//   .then((res) => {
+//     console.log(res[0]);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // test article
 
 // const { extract } = require('article-parser');
 
-// const url = "https://www.nme.com/news/gaming-news/ubisoft-is-suing-apple-and-google-over-a-rainbow-six-siege-ripoff-2670643"
+// const url = 'https://www.moneyweb.co.za/news/south-africa/business-stands-behind-government-efforts-to-ease-restrictions/';
 // extract(url).then((article) => {
 //   console.log(article);
 // }).catch((err) => {

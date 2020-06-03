@@ -1,17 +1,26 @@
 /* eslint-disable prefer-promise-reject-errors */
+import mongoose from 'mongoose';
 import Interest from '../models/interest_model';
 import RESPONSE_CODES from '../constants';
 
 export const createInterest = (body) => {
   return new Promise((resolve, reject) => {
-    Interest.create({
-      interestName: body.interestName,
-      imageURL: body.imageURL,
-    }).then((result) => {
-      resolve(result);
-    }).catch((error) => {
-      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-    });
+    Interest.exists({ interestName: body.interestName })
+      .then((response) => {
+        if (!response) {
+          Interest.create({
+            interestName: body.interestName,
+            imageURL: body.imageURL,
+          }).then((result) => {
+            resolve(result);
+          }).catch((error) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+          });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
   });
 };
 
@@ -21,6 +30,23 @@ export const deleteInterest = (id) => {
       .then((c) => {
         resolve(c);
       }).catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const addArticleToInterest = (interestName, article) => {
+  return new Promise((resolve, reject) => {
+    Interest.findOneAndUpdate({ interestName }, { $addToSet: { articles: new mongoose.Types.ObjectId(article.id) } }, { new: true, upsert: true })
+      .then((interest) => {
+        if (interest !== null) {
+          resolve(interest);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        console.log('populate failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

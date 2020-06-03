@@ -28,6 +28,14 @@ const RESPONSE_CODES = {
     status: 200,
     message: 'NOTHING_TO_UPDATE',
   },
+  API_REQUEST_FAILED: {
+    status: 405,
+    message: 'API REQUEST FAILED',
+  },
+  API_METHOD_ERROR: {
+    status: 406,
+    message: 'DAILY API METHOD FAILED',
+  },
 };
 
 export default RESPONSE_CODES;
