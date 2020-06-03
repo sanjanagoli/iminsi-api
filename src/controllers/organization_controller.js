@@ -45,6 +45,7 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
     Organization.exists({ sourceUrl: organizationBaseUrl })
       .then((response) => {
         if (response) {
+          console.log('news org exists');
           Organization.findOneAndUpdate({ sourceUrl: organizationBaseUrl }, { $addToSet: { articles: new mongoose.Types.ObjectId(article.id) } })
             .then((org) => {
               if (org !== null) {
@@ -61,7 +62,7 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
           const tempArticleId = new mongoose.Types.ObjectId(article.id);
           const organization = {
             orgName: '',
-            score: 0,
+            score: 1,
             sourceUrl: organizationBaseUrl,
             articles: [tempArticleId],
           };

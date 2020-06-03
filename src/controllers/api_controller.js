@@ -35,7 +35,6 @@ export const dailyAPICall = () => {
             const country = apiCountries.NEWS_API[countryName];
             newsapi.v2.topHeadlines({
               category,
-              q: 'money',
               language: 'en',
               country,
             })
@@ -55,27 +54,27 @@ export const dailyAPICall = () => {
       }),
     );
 
-    newsApiPromises.push(
-      new Promise((resolve, reject) => {
-        Object.values(apiCountries.NEWS_API).map((country) => {
-          apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
-            newsapi.v2.topHeadlines({
-              q: politicsQuery,
-              language: 'en',
-              country,
-            })
-              .then((response) => {
-                // console.log(response);
-                newsApiResponses.push(response);
-                resolve(response);
-              })
-              .catch((err) => {
-                reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
-              });
-          });
-        });
-      }),
-    );
+    // newsApiPromises.push(
+    //   new Promise((resolve, reject) => {
+    //     Object.values(apiCountries.NEWS_API).map((country) => {
+    //       apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+    //         newsapi.v2.topHeadlines({
+    //           q: politicsQuery,
+    //           language: 'en',
+    //           country,
+    //         })
+    //           .then((response) => {
+    //             // console.log(response);
+    //             newsApiResponses.push(response);
+    //             resolve(response);
+    //           })
+    //           .catch((err) => {
+    //             reject({ code: RESPONSE_CODES.API_REQUEST_FAILED, err });
+    //           });
+    //       });
+    //     });
+    //   }),
+    // );
 
     // handle other apis
 
@@ -108,6 +107,7 @@ export const populateDatabases = (data, category, country) => {
       title: art.title,
       imageURL: art.urlToImage,
       urlSource: art.url,
+      summary: art.content,
       date: new Date(art.publishedAt),
       author: art.author || '',
       content: '',

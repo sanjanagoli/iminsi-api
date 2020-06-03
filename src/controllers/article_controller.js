@@ -22,6 +22,7 @@ export const createArticle = (body) => {
             imageURL: body.imageURL,
             location: body.location,
             urlSource: body.urlSource,
+            summary: body.summary,
             author: body.author,
             date: body.date || new Date(),
             score: body.score || 1,

@@ -10,6 +10,7 @@ const ArticleSchema = new Schema({
   content: String,
   imageURL: String,
   location: String,
+  summary: String,
   urlSource: String,
   author: String,
   score: Number,
