@@ -155,6 +155,47 @@ export const addArticleToProfile = (id, article) => {
   });
 };
 
+export const getProfileArticles = (id) => {
+  return new Promise((resolve, reject) => {
+    User.find({ id })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user.profileArticles);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+
+export const addOrganizationToProfile = (id, organization) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, {
+      $addToSet: {
+        trustedOrganizations: {
+          totalReadArticles: 0,
+          totalScore: 0,
+          organization: new mongoose.Types.ObjectId(organization.sourceUrl),
+        },
+      },
+    })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
 export const getTrustedOrganizations = (id) => {
   return new Promise((resolve, reject) => {
     User.find({ id })

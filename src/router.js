@@ -76,6 +76,22 @@ router.route('/user/:id')
     User.updateUser(req.params.id, req.body).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
+router.route('/user/:id/trustedSources')
+  .get((req, res) => {
+    User.getTrustedOrganizations(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .post((req, res) => {
+    User.addArticleToProfile(req.params.id, req.body.organization).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  });
+
+router.route('/user/:id/profileArticles')
+  .post((req, res) => {
+    User.addArticleToProfile(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .get((req, res) => {
+    User.getTrustedOrganizations(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  });
+
 // ORGANIZATIONS
 router.route('/organizations/:id')
   .put((req, res) => {
