@@ -15,6 +15,7 @@ const ArticleSchema = new Schema({
   author: String,
   score: Number,
   date: Date,
+  verified: Boolean,
   newsOrganization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
   interestCategories: [
     {

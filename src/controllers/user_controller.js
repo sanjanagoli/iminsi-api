@@ -2,6 +2,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 import dotenv from 'dotenv';
 import jwt from 'jwt-simple';
+import mongoose from 'mongoose';
 import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // var ObjectId = require('mongodb').ObjectID;
@@ -134,6 +135,38 @@ export const updateUser = (id, body) => {
       })
       .catch((err) => {
         reject(err);
+      });
+  });
+};
+
+export const addArticleToProfile = (id, article) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $addToSet: { profileArticles: new mongoose.Types.ObjectId(article.id) } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const getTrustedOrganizations = (id) => {
+  return new Promise((resolve, reject) => {
+    User.find({ id })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user.trustedOrganizations);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
 };
