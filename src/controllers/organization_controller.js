@@ -59,9 +59,10 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
               reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
             });
         } else {
+          console.log('doesnt exist');
           const tempArticleId = new mongoose.Types.ObjectId(article.id);
           const organization = {
-            orgName: '',
+            orgName: article.source.name,
             score: 1,
             sourceUrl: organizationBaseUrl,
             articles: [tempArticleId],
@@ -76,7 +77,6 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
         }
       })
       .catch((error) => {
-        console.log('doesnt exist');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

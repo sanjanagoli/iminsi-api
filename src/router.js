@@ -31,6 +31,11 @@ router.route('/article')
     Article.createArticle(req.body).then(res.status(200).send('article created')).catch((error) => { res.status(500).send(error.message); });
   });
 
+router.route('/verified')
+  .get((req, res) => {
+    Article.getVerifiedList().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  });
+
 
 // INTERESTS
 router.route('/interest/:id')
@@ -90,6 +95,14 @@ router.route('/user/:id/profileArticles')
   })
   .get((req, res) => {
     User.getTrustedOrganizations(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  });
+
+router.route('/user/:id/profileInterests')
+  .post((req, res) => {
+    User.addInterestToProfile(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .get((req, res) => {
+    User.getUserInterests((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 // ORGANIZATIONS
