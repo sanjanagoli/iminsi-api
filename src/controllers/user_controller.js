@@ -13,6 +13,14 @@ dotenv.config({ silent: true });
 export const getUserByUsername = (username) => {
   return new Promise((resolve, reject) => {
     User.findOne({ username })
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+      })
+      // .populate({
+      //   path: 'profileArticles',
+      //   model: 'Article',
+      // })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -27,6 +35,7 @@ export const getUserByUsername = (username) => {
 };
 
 export const signIn = (req, res, next) => {
+  console.log('test');
   getUserByUsername(req.user.username)
     .then((userObj) => {
       res.send({ token: tokenForUser(req.user), user: userObj });
