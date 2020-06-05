@@ -16,6 +16,14 @@ export const getUserByUsername = (username) => {
       .populate({
         path: 'interests',
         model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
       })
       // .populate({
       //   path: 'profileArticles',
@@ -95,6 +103,10 @@ export const getUsers = () => {
       .populate({
         path: 'interests',
         model: 'Interest',
+      })
+      .populate({
+        path: 'interests.articles',
+        model: 'Article',
       })
       .populate({
         path: 'profileArticles',
