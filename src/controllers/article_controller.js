@@ -172,7 +172,17 @@ export const getVerifiedList = () => {
     // populate
     getArticles()
       .then((articles) => {
-        articles.sort(((a, b) => { return (b.score * b.newsOrganization.score - a.score * a.newsOrganization.score); }));
+        articles.sort(((a, b) => {
+          let bScore = b.score;
+          let aScore = a.score;
+          if (b.score < 0) {
+            bScore = 0;
+          }
+          if (a.score < 0) {
+            aScore = 0;
+          }
+          return (bScore * b.newsOrganization.score - aScore * a.newsOrganization.score);
+        }));
         if (articles.length < 50) {
           resolve(articles.splice(0, articles.length));
         } else {

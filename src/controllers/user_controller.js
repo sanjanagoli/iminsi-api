@@ -10,20 +10,53 @@ import RESPONSE_CODES from '../constants/index';
 // t2ekdi mn hada
 dotenv.config({ silent: true });
 
-export const signIn = (req, res, next) => {
-  res.send({ token: tokenForUser(req.user) });
+export const getUserByUsername = (username) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({ username })
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      // .populate({
+      //   path: 'profileArticles',
+      //   model: 'Article',
+      // })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
 };
 
-// handle for array of references to interests, articles, and analytics potentially
-// eslint-disable-next-line consistent-return
+export const signIn = (req, res, next) => {
+  console.log('test');
+  getUserByUsername(req.user.username)
+    .then((userObj) => {
+      res.send({ token: tokenForUser(req.user), user: userObj });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 export const signUp = (req, res, next) => {
   const username = req.body.username;
   const country = req.body.country || '';
   const password = req.body.password;
-
-  if (!username || !password) {
-    return res.status(422).send('You must provide a username and a password');
-  }
 
   // mongo query to find if a user already exists with this username
   User.findOne({ username })
@@ -41,7 +74,7 @@ export const signUp = (req, res, next) => {
         return user.save()
           .then((result2) => {
             // return a token same as in signin
-            res.send({ token: tokenForUser(result2) });
+            res.send({ token: tokenForUser(result2), user: result2 });
           })
           .catch((error) => {
             res.status(500).json({ error });
@@ -70,6 +103,10 @@ export const getUsers = () => {
       .populate({
         path: 'interests',
         model: 'Interest',
+      })
+      .populate({
+        path: 'interests.articles',
+        model: 'Article',
       })
       .populate({
         path: 'profileArticles',
@@ -119,11 +156,12 @@ export const updateUser = (id, body) => {
     User.findById(id)
       .then((user) => {
         if (body.user != null) {
-          user.firstName = body.user.firstName || user.firstName;
-          user.lastName = body.user.lastName || user.lastName;
-          user.country = body.user.country || user.country;
-          user.profPicture = body.user.profPicture || user.profPicture;
-          user.title = body.user.title || user.title;
+          // user.firstName = body.user.firstName || user.firstName;
+          // user.lastName = body.user.lastName || user.lastName;
+          user.username = body.username;
+          user.country = body.country || user.country;
+          user.profPicture = body.profPicture || user.profPicture;
+          // user.title = body.title || user.title;
           user.save().then((result) => {
             resolve(result);
           }).catch((error) => {
@@ -155,12 +193,85 @@ export const addArticleToProfile = (id, article) => {
   });
 };
 
+export const getProfileArticles = (id) => {
+  return new Promise((resolve, reject) => {
+    User.find({ id })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user.profileArticles);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+
+export const addOrganizationToProfile = (id, organization) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, {
+      $addToSet: {
+        trustedOrganizations: {
+          totalReadArticles: 0,
+          totalScore: 0,
+          organization: new mongoose.Types.ObjectId(organization.sourceUrl),
+        },
+      },
+    })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const addInterestToProfile = (id, interest) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $addToSet: { interests: new mongoose.Types.ObjectId(interest.id) } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
 export const getTrustedOrganizations = (id) => {
   return new Promise((resolve, reject) => {
     User.find({ id })
       .then((user) => {
         if (user !== null) {
           resolve(user.trustedOrganizations);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const getUserInterests = (id) => {
+  return new Promise((resolve, reject) => {
+    User.find({ id })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user.interests);
         } else {
           reject({ code: RESPONSE_CODES.NOT_FOUND });
         }

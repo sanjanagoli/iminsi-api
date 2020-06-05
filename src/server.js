@@ -9,6 +9,7 @@ import apiRouter from './router';
 // import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
 // import * as ApiController from './controllers/api_controller';
+// import * as UserController from './controllers/user_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -69,13 +70,25 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
+
 // const art = {
-//   id: '5ed719eafc51317658d50deb',
+//   id: '5ed71f511779157a29f5a763',
 // };
 
-// Organization.addArticleToNewsOrganization('www.football.london', art)
+// const art2 = {
+//   id: '5ed71f531779157a29f5a76a',
+// };
+
+// Organization.addArticleToNewsOrganization('www.test.com', art)
 //   .then((org) => {
 //     console.log(org);
+//     Organization.addArticleToNewsOrganization('www.test.com', art2)
+//       .then((o) => {
+//         console.log(o);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
 //   })
 //   .catch((err) => {
 //     console.log(err);
