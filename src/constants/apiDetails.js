@@ -11,3 +11,6 @@ export const apiCountries = {
     'South Africa': 'za',
   },
 };
+
+export const constantInterests = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology', 'politics'];
+export const availableCountries = ['Egypt', 'Nigeria', 'Morocco', 'South Africa'];

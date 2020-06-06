@@ -6,7 +6,7 @@ import * as Article from './article_controller';
 import * as Interest from './interest_controller';
 import * as Organization from './organization_controller';
 import RESPONSE_CODES from '../constants/index';
-import { apiCategories, apiCountries } from '../constants/apiDetails';
+import { apiCategories, apiCountries, availableCountries } from '../constants/apiDetails';
 
 
 const NewsAPI = require('newsapi');
@@ -180,4 +180,10 @@ export const populateAll = (category, country, artcl) => {
     res(artcl);
   });
   // Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl);
+};
+
+export const getAvailableCountries = () => {
+  return new Promise((resolve, reject) => {
+    resolve(availableCountries);
+  });
 };

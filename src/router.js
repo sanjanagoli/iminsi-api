@@ -3,6 +3,7 @@ import * as Article from './controllers/article_controller';
 import * as Interest from './controllers/interest_controller';
 import * as Organization from './controllers/organization_controller';
 import * as User from './controllers/user_controller';
+import * as ApiController from './controllers/api_controller';
 import { requireSignin } from './services/passportService';
 
 const router = Router();
@@ -56,6 +57,12 @@ router.route('/interest')
   })
   .post((req, res) => {
     Interest.createInterest(req.body).then(res.status(200).send('interest created')).catch((error) => { res.status(500).send(error.message); });
+  });
+
+// constants
+router.route('/resources/countries')
+  .get((req, res) => {
+    ApiController.getAvailableCountries().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 // USER
