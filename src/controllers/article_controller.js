@@ -2,7 +2,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 import mongoose from 'mongoose';
 import Article from '../models/article_model';
-import User from '../models/user_model';
+// import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
 
