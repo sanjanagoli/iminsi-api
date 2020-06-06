@@ -1,3 +1,6 @@
+/* eslint-disable func-names */
+/* eslint-disable space-before-function-paren */
+/* eslint-disable prefer-arrow-callback */
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -6,10 +9,10 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-// import * as Article from './controllers/article_controller';
+import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
 // import * as ApiController from './controllers/api_controller';
-import * as UserController from './controllers/user_controller';
+// import * as UserController from './controllers/user_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -70,17 +73,17 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-const org = {
-  id: '5ed71f541779157a29f5a76c',
-};
+// const org = {
+//   id: '5ed71f541779157a29f5a76c',
+// };
 
-UserController.deleteUserOrganization('5ed9c8ea61291acba01dcdd4', org)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// UserController.deleteUserOrganization('5ed9c8ea61291acba01dcdd4', org)
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 
 // const art = {
@@ -90,6 +93,14 @@ UserController.deleteUserOrganization('5ed9c8ea61291acba01dcdd4', org)
 // const art2 = {
 //   id: '5ed71f531779157a29f5a76a',
 // };
+
+// Article.updateArticleScore('5ed7201e0c31f07abaad0016', 10)
+//   .then((response) => {
+//     console.log(response);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
 // Organization.addArticleToNewsOrganization('www.test.com', art)
 //   .then((org) => {

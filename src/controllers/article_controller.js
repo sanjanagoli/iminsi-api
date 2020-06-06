@@ -2,6 +2,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 import mongoose from 'mongoose';
 import Article from '../models/article_model';
+import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
 
@@ -159,8 +160,28 @@ export const updateArticleScore = (id, score) => {
   return new Promise((resolve, reject) => {
     Article.findByIdAndUpdate(id, { $inc: { score } })
       .then((res) => {
-        resolve(res);
         // if score greater than users/4*2.5^2
+        // replace with user count
+        if (res.score + score > (5 * 1.5625) && res.verified === false) {
+          console.log('here', res.score + score);
+          Article.findByIdAndUpdate(id, { verified: true })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+            });
+        } else if (res.score + score < (5 * 1.5625) && res.verified === true) {
+          Article.findByIdAndUpdate(id, { verified: false })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+            });
+        } else {
+          resolve(res);
+        }
       })
       .catch((err) => {
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
