@@ -9,7 +9,7 @@ import apiRouter from './router';
 // import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
 // import * as ApiController from './controllers/api_controller';
-// import * as UserController from './controllers/user_controller';
+import * as UserController from './controllers/user_controller';
 // import * as Interest from './controllers/interest_controller';
 
 // DB Setup
@@ -69,6 +69,18 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
+const org = {
+  id: '5ed71f541779157a29f5a76c',
+};
+
+UserController.deleteUserOrganization('5ed9c8ea61291acba01dcdd4', org)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 
 // const art = {

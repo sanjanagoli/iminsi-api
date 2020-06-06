@@ -193,6 +193,22 @@ export const addArticleToProfile = (id, article) => {
   });
 };
 
+export const deleteUserArticle = (id, article) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $pull: { profileArticles: article.id } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
 export const getProfileArticles = (id) => {
   return new Promise((resolve, reject) => {
     User.find({ id })
@@ -234,9 +250,48 @@ export const addOrganizationToProfile = (id, organization) => {
   });
 };
 
+export const deleteUserOrganization = (id, organization) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, {
+      $pull: {
+        trustedOrganizations: {
+          organization: organization.id,
+        },
+      },
+    })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+
 export const addInterestToProfile = (id, interest) => {
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, { $addToSet: { interests: new mongoose.Types.ObjectId(interest.id) } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const deleteUserInterest = (id, interest) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $pull: { interests: interest.id } })
       .then((user) => {
         if (user !== null) {
           resolve(user);

@@ -160,6 +160,7 @@ export const updateArticleScore = (id, score) => {
     Article.findByIdAndUpdate(id, { $inc: { score } })
       .then((res) => {
         resolve(res);
+        // if score greater than users/4*2.5^2
       })
       .catch((err) => {
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
