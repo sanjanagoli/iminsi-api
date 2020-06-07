@@ -32,9 +32,9 @@ router.route('/article')
     Article.createArticle(req.body).then(res.status(200).send('article created')).catch((error) => { res.status(500).send(error.message); });
   });
 
-router.route('/verified')
+router.route('/article/verified')
   .get((req, res) => {
-    Article.getVerifiedList().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    Article.getVerifiedList().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send('failed'); });
   });
 
 

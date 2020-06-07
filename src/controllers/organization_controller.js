@@ -55,7 +55,7 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
               }
             })
             .catch((error) => {
-              console.log('populate failed');
+              console.log('add article to news organization failed');
               reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
             });
         } else {
@@ -93,7 +93,7 @@ export const getOrganizations = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get organizations failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

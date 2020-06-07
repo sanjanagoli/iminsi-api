@@ -74,7 +74,7 @@ export const getArticles = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get articles failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -95,7 +95,7 @@ export const getArticle = (id) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get article failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -112,7 +112,7 @@ export const addInterestToArticle = (articleId, interest) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('add interest to article failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

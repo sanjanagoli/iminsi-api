@@ -120,7 +120,7 @@ export const getUsers = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get users failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -145,7 +145,7 @@ export const getUser = (id) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get user failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
