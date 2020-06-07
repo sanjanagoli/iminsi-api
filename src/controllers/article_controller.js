@@ -95,7 +95,7 @@ export const getArticle = (id) => {
         }
       })
       .catch((error) => {
-        console.log('get article failed');
+        console.log('get by id article failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -212,6 +212,7 @@ export const getVerifiedList = () => {
         }
       })
       .catch((error) => {
+        console.log('in here');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
