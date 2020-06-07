@@ -2,6 +2,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 import mongoose from 'mongoose';
 import Article from '../models/article_model';
+// import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
 
@@ -73,7 +74,7 @@ export const getArticles = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get articles failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -94,7 +95,7 @@ export const getArticle = (id) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get by id article failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -111,7 +112,7 @@ export const addInterestToArticle = (articleId, interest) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('add interest to article failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -159,7 +160,28 @@ export const updateArticleScore = (id, score) => {
   return new Promise((resolve, reject) => {
     Article.findByIdAndUpdate(id, { $inc: { score } })
       .then((res) => {
-        resolve(res);
+        // if score greater than users/4*2.5^2
+        // replace with user count
+        if (res.score + score > (5 * 1.5625) && res.verified === false) {
+          console.log('here', res.score + score);
+          Article.findByIdAndUpdate(id, { verified: true })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+            });
+        } else if (res.score + score < (5 * 1.5625) && res.verified === true) {
+          Article.findByIdAndUpdate(id, { verified: false })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((err) => {
+              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+            });
+        } else {
+          resolve(res);
+        }
       })
       .catch((err) => {
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
@@ -190,6 +212,7 @@ export const getVerifiedList = () => {
         }
       })
       .catch((error) => {
+        console.log('in here');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });

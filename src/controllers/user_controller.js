@@ -120,7 +120,7 @@ export const getUsers = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get users failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -145,7 +145,7 @@ export const getUser = (id) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get user failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -180,6 +180,22 @@ export const updateUser = (id, body) => {
 export const addArticleToProfile = (id, article) => {
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, { $addToSet: { profileArticles: new mongoose.Types.ObjectId(article.id) } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const deleteUserArticle = (id, article) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $pull: { profileArticles: article.id } })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -234,9 +250,48 @@ export const addOrganizationToProfile = (id, organization) => {
   });
 };
 
+export const deleteUserOrganization = (id, organization) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, {
+      $pull: {
+        trustedOrganizations: {
+          organization: organization.id,
+        },
+      },
+    })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+
 export const addInterestToProfile = (id, interest) => {
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, { $addToSet: { interests: new mongoose.Types.ObjectId(interest.id) } })
+      .then((user) => {
+        if (user !== null) {
+          resolve(user);
+        } else {
+          reject({ code: RESPONSE_CODES.NOT_FOUND });
+        }
+      })
+      .catch((error) => {
+        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+      });
+  });
+};
+
+export const deleteUserInterest = (id, interest) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(id, { $pull: { interests: interest.id } })
       .then((user) => {
         if (user !== null) {
           resolve(user);

@@ -46,7 +46,7 @@ export const addArticleToInterest = (interestName, article) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('add article to interest failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -67,7 +67,7 @@ export const getInterests = () => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get interests failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -84,7 +84,7 @@ export const getInterestById = (id) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get interest failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
@@ -101,7 +101,7 @@ export const getInterestByName = (interestName) => {
         }
       })
       .catch((error) => {
-        console.log('populate failed');
+        console.log('get interest by name failed');
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
       });
   });
