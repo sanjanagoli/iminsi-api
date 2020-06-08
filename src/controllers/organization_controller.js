@@ -101,7 +101,7 @@ export const getOrganizations = () => {
 
 export const getOrganization = (id) => {
   return new Promise((resolve, reject) => {
-    Organization.findById({ id })
+    Organization.findById(id)
       .then((org) => {
         if (org !== null) {
           resolve(org);

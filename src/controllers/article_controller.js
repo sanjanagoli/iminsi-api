@@ -83,8 +83,9 @@ export const getArticles = () => {
 };
 
 export const getArticle = (id) => {
+  console.log(id);
   return new Promise((resolve, reject) => {
-    Article.findById({ id })
+    Article.findById(id)
       .populate({
         path: 'interestCategories',
         model: 'Interest',
@@ -160,13 +161,13 @@ export const replaceArticleInterestCategory = (id, body) => {
 
 export const updateArticleScore = (id, score) => {
   return new Promise((resolve, reject) => {
-    Article.findByIdAndUpdate(id, { $inc: { score } })
+    Article.findByIdAndUpdate(id, { $inc: { score } }, { new: true })
       .then((res) => {
         User.countDocuments()
           .then((c) => {
             const threshold = c * 2.5 ** 2;
 
-            if (res.score + score > threshold && res.verified === false) {
+            if (res.score > threshold && res.verified === false) {
               Article.findByIdAndUpdate(id, { verified: true })
                 .then((response) => {
                   resolve(response);
@@ -174,7 +175,7 @@ export const updateArticleScore = (id, score) => {
                 .catch((err) => {
                   reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
                 });
-            } else if (res.score + score < threshold && res.verified === true) {
+            } else if (res.score < threshold && res.verified === true) {
               Article.findByIdAndUpdate(id, { verified: false })
                 .then((response) => {
                   resolve(response);

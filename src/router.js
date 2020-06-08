@@ -115,7 +115,7 @@ router.route('/user/:id/profileInterests')
     User.addInterestToProfile(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .get((req, res) => {
-    User.getUserInterests((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    User.getUserInterests(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .delete((req, res) => {
     User.deleteUserInterest(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
