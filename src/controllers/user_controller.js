@@ -129,7 +129,7 @@ export const getUsers = () => {
 
 export const getUser = (id) => {
   return new Promise((resolve, reject) => {
-    User.findById({ id })
+    User.findById(id)
       .populate({
         path: 'interests',
         model: 'Interest',
@@ -179,8 +179,9 @@ export const updateUser = (id, body) => {
 };
 
 export const addArticleToProfile = (id, article) => {
+  console.log('in add', article);
   return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(id, { $addToSet: { profileArticles: new mongoose.Types.ObjectId(article.id) } })
+    User.findByIdAndUpdate(id, { $addToSet: { profileArticles: new mongoose.Types.ObjectId(article.id) } }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -195,8 +196,9 @@ export const addArticleToProfile = (id, article) => {
 };
 
 export const deleteUserArticle = (id, article) => {
+  console.log('in delete', article);
   return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(id, { $pull: { profileArticles: article.id } })
+    User.findByIdAndUpdate(id, { $pull: { profileArticles: article.id } }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -212,7 +214,7 @@ export const deleteUserArticle = (id, article) => {
 
 export const getProfileArticles = (id) => {
   return new Promise((resolve, reject) => {
-    User.find({ id })
+    User.findById(id)
       .then((user) => {
         if (user !== null) {
           resolve(user.profileArticles);
@@ -246,7 +248,7 @@ export const addOrganizationToProfile = (id, organizations) => {
           $each: organizationObjects,
         },
       },
-    })
+    }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -268,7 +270,7 @@ export const deleteUserOrganization = (id, organization) => {
           organization: organization.id,
         },
       },
-    })
+    }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -290,7 +292,7 @@ export const addInterestToProfile = (id, interests) => {
   });
 
   return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(id, { $addToSet: { interests: { $each: interestObjects } } })
+    User.findByIdAndUpdate(id, { $addToSet: { interests: { $each: interestObjects } } }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -306,7 +308,7 @@ export const addInterestToProfile = (id, interests) => {
 
 export const deleteUserInterest = (id, interest) => {
   return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(id, { $pull: { interests: interest.id } })
+    User.findByIdAndUpdate(id, { $pull: { interests: interest.id } }, { new: true })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -322,7 +324,7 @@ export const deleteUserInterest = (id, interest) => {
 
 export const getTrustedOrganizations = (id) => {
   return new Promise((resolve, reject) => {
-    User.find({ id })
+    User.findById(id)
       .then((user) => {
         if (user !== null) {
           resolve(user.trustedOrganizations);
@@ -338,7 +340,7 @@ export const getTrustedOrganizations = (id) => {
 
 export const getUserInterests = (id) => {
   return new Promise((resolve, reject) => {
-    User.find({ id })
+    User.findById(id)
       .then((user) => {
         if (user !== null) {
           resolve(user.interests);
