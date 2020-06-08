@@ -20,12 +20,12 @@ Automatic deployments from master are enabled (any time a new change is pushed t
 
 ## Authors
 
-Meriem Fouad
-Sanjana Goli
-Abubakar Kasule
-Rohith Mandavilli
-Bryan Manzi
-Katrina Yu
+Meriem Fouad <br />
+Sanjana Goli <br />
+Abubakar Kasule <br />
+Rohith Mandavilli <br />
+Bryan Manzi <br />
+Katrina Yu <br />
 
 ## Acknowledgments
 
