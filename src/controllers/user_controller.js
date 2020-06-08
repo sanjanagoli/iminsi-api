@@ -226,14 +226,23 @@ export const getProfileArticles = (id) => {
 };
 
 
-export const addOrganizationToProfile = (id, organization) => {
+export const addOrganizationToProfile = (id, organizations) => {
+  const organizationObjects = [];
+  organizations.map((org) => {
+    const obj = {
+      totalReadArticles: 0,
+      totalScore: 1,
+      organization: new mongoose.Types.ObjectId(org.id),
+    };
+    return organizationObjects.push(obj);
+  });
+
+
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, {
       $addToSet: {
         trustedOrganizations: {
-          totalReadArticles: 0,
-          totalScore: 0,
-          organization: new mongoose.Types.ObjectId(organization.sourceUrl),
+          $each: organizationObjects,
         },
       },
     })
@@ -273,9 +282,14 @@ export const deleteUserOrganization = (id, organization) => {
 };
 
 
-export const addInterestToProfile = (id, interest) => {
+export const addInterestToProfile = (id, interests) => {
+  const interestObjects = [];
+  interests.map((interest) => {
+    return interestObjects.push(new mongoose.Types.ObjectId(interest.id));
+  });
+
   return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(id, { $addToSet: { interests: new mongoose.Types.ObjectId(interest.id) } })
+    User.findByIdAndUpdate(id, { $addToSet: { interests: { $each: interestObjects } } })
       .then((user) => {
         if (user !== null) {
           resolve(user);

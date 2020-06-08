@@ -70,18 +70,20 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-const org = {
-  id: '5ed71f541779157a29f5a76c',
-};
+// const array = [{
+//   id: '5ed71f531779157a29f5a769', // 5ed71f531779157a29f5a769
+// }, {
+//   id: '5ed71f541779157a29f5a76c', // 5ed71f541779157a29f5a76c
+// }];
 
-UserController.deleteUserOrganization('5ed9c8ea61291acba01dcdd4', org)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
+// UserController.addOrganizationToProfile('5ed9c8ea61291acba01dcdd4', array)
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // const art = {
 //   id: '5ed71f511779157a29f5a763',
