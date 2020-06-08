@@ -16,13 +16,6 @@ router.route('/').get((req, res) => {
 });
 
 // ARTICLES
-router.route('/article/:id')
-  .get((req, res) => {
-    Article.getArticle(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
-  })
-  .put((req, res) => {
-    Article.updateArticleScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
-  });
 
 router.route('/article')
   .get((req, res) => {
@@ -32,11 +25,18 @@ router.route('/article')
     Article.createArticle(req.body).then(res.status(200).send('article created')).catch((error) => { res.status(500).send(error.message); });
   });
 
-router.route('/verified')
+router.route('/article/verified')
   .get((req, res) => {
     Article.getVerifiedList().then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
+router.route('/article/:id')
+  .get((req, res) => {
+    Article.getArticle(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .put((req, res) => {
+    Article.updateArticleScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  });
 
 // INTERESTS
 router.route('/interest/:id')
