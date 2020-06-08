@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-// import * as Article from './controllers/article_controller';
+import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
 // import * as ApiController from './controllers/api_controller';
 // import * as UserController from './controllers/user_controller';
@@ -138,13 +138,13 @@ console.log(`listening on: ${port}`);
 //     console.log(err);
 //   });
 
-// Article.getVerifiedList()
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+Article.getVerifiedList()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 
 // test calls

@@ -7,7 +7,7 @@ import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
 
 require('dotenv').config(); // load environment variables
-
+const moment = require('moment');
 // var ObjectId = require('mongodb').ObjectID;
 
 export const createArticle = (body) => {
@@ -197,13 +197,19 @@ export const getVerifiedList = () => {
         articles.sort(((a, b) => {
           let bScore = b.score;
           let aScore = a.score;
+
           if (b.score < 0) {
             bScore = 0;
           }
           if (a.score < 0) {
             aScore = 0;
           }
-          return (bScore * b.newsOrganization.score - aScore * a.newsOrganization.score);
+
+          const today = moment();
+          const bDateWeight = 0.8 ** (moment(b.date).diff(today, 'days') * -1);
+          const aDateWeight = 0.8 ** (moment(a.date).diff(today, 'days') * -1);
+
+          return (bScore * b.newsOrganization.score * bDateWeight - aScore * a.newsOrganization.score * aDateWeight);
         }));
         if (articles.length < 50) {
           resolve(articles.splice(0, articles.length));

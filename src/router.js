@@ -93,7 +93,10 @@ router.route('/user/:id/trustedSources')
     User.getTrustedOrganizations(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .post((req, res) => {
-    User.addArticleToProfile(req.params.id, req.body.organization).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    User.addOrganizationToProfile(req.params.id, req.body.organization).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .delete((req, res) => {
+    User.deleteUserOrganization(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 router.route('/user/:id/profileArticles')
@@ -101,7 +104,10 @@ router.route('/user/:id/profileArticles')
     User.addArticleToProfile(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   })
   .get((req, res) => {
-    User.getTrustedOrganizations(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    User.getProfileArticles(req.params.id).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .delete((req, res) => {
+    User.deleteUserArticle(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 router.route('/user/:id/profileInterests')
@@ -110,12 +116,15 @@ router.route('/user/:id/profileInterests')
   })
   .get((req, res) => {
     User.getUserInterests((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+  })
+  .delete((req, res) => {
+    User.deleteUserInterest(req.params.id, req.body.article).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 // ORGANIZATIONS
 router.route('/organizations/:id')
   .put((req, res) => {
-    Organization.incrementOrganizationScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
+    Organization.updateOrganizationScore(req.params.id, req.body.score).then((done) => { res.status(200).send(done); }).catch((error) => { res.status(500).send(error.message); });
   });
 
 router.post('/signin', requireSignin, User.signIn);
