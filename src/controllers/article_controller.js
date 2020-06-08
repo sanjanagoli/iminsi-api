@@ -5,6 +5,8 @@ import Article from '../models/article_model';
 // import User from '../models/user_model';
 import RESPONSE_CODES from '../constants/index';
 // import { apiCountries } from '../constants/apiDetails';
+import User from '../models/user_model';
+
 
 require('dotenv').config(); // load environment variables
 const moment = require('moment');
@@ -160,28 +162,33 @@ export const updateArticleScore = (id, score) => {
   return new Promise((resolve, reject) => {
     Article.findByIdAndUpdate(id, { $inc: { score } })
       .then((res) => {
-        // if score greater than users/4*2.5^2
-        // replace with user count
-        if (res.score + score > (5 * 1.5625) && res.verified === false) {
-          console.log('here', res.score + score);
-          Article.findByIdAndUpdate(id, { verified: true })
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((err) => {
-              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
-            });
-        } else if (res.score + score < (5 * 1.5625) && res.verified === true) {
-          Article.findByIdAndUpdate(id, { verified: false })
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((err) => {
-              reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
-            });
-        } else {
-          resolve(res);
-        }
+        User.countDocuments()
+          .then((c) => {
+            const threshold = c * 2.5 ** 2;
+
+            if (res.score + score > threshold && res.verified === false) {
+              Article.findByIdAndUpdate(id, { verified: true })
+                .then((response) => {
+                  resolve(response);
+                })
+                .catch((err) => {
+                  reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+                });
+            } else if (res.score + score < threshold && res.verified === true) {
+              Article.findByIdAndUpdate(id, { verified: false })
+                .then((response) => {
+                  resolve(response);
+                })
+                .catch((err) => {
+                  reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+                });
+            } else {
+              resolve(res);
+            }
+          })
+          .catch((err) => {
+            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
+          });
       })
       .catch((err) => {
         reject({ code: RESPONSE_CODES.INTERNAL_ERROR, err });
@@ -211,6 +218,7 @@ export const getVerifiedList = () => {
 
           return (bScore * b.newsOrganization.score * bDateWeight - aScore * a.newsOrganization.score * aDateWeight);
         }));
+
         if (articles.length < 50) {
           resolve(articles.splice(0, articles.length));
         } else {

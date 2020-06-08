@@ -9,11 +9,12 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
-import * as Article from './controllers/article_controller';
+// import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
 // import * as ApiController from './controllers/api_controller';
 // import * as UserController from './controllers/user_controller';
 // import * as Interest from './controllers/interest_controller';
+
 
 // DB Setup
 require('dotenv').config(); // load environment variables
@@ -72,6 +73,7 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+
 
 // const array = [{
 //   id: '5ed71f531779157a29f5a769', // 5ed71f531779157a29f5a769
@@ -138,13 +140,13 @@ console.log(`listening on: ${port}`);
 //     console.log(err);
 //   });
 
-Article.getVerifiedList()
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// Article.getVerifiedList()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 
 // test calls
