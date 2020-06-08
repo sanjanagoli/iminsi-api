@@ -1,12 +1,11 @@
 # Project Name
 
-![Team Photo](Insert a Team Photo URL here)
-[*how?*](https://help.github.com/articles/about-readmes/#relative-links-and-image-paths-in-readme-files)
+![Team Photo](https://imgur.com/PdFw8A9)
 
-TODO: short project description, some sample screenshots or mockups
+Africa has a chronic media problem. It is very difficult to know what is happening in other countries in Africa without relying on western news coverage. Iminsi is the first all-African news app. The app uses the power of crowdsourcing to deliver a platform of reliable, local African news. 
 
 ## Notes
-`cd project-api-iminsi` and `yarn start` to start server and database
+
 
 ## Architecture
 
@@ -14,14 +13,23 @@ TODO:  descriptions of code organization and tools and libraries used
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+`cd project-api-iminsi` <br />
+`yarn install` to install all dependencies <br />
+`yarn start` to start server and database
 
 ## Deployment
 
-TODO: how to deploy the project
+Automatic deployments from master are enabled (any time a new change is pushed to master)
 
 ## Authors
 
-TODO: list of authors
+Meriem Fouad
+Sanjana Goli
+Abubakar Kasule
+Rohith Mandavilli
+Bryan Manzi
+Katrina Yu
 
 ## Acknowledgments
+
+We'd like to thank Tim for all of his guidance and for being such a great instructor in CS52! 
