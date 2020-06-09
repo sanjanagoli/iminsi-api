@@ -226,6 +226,10 @@ export const getProfileArticles = (id) => {
       .populate({
         path: 'profileArticles',
         model: 'Article',
+        populate: {
+          path: 'newsOrganization',
+          model: 'Organization',
+        },
       })
       .then((user) => {
         if (user !== null) {
@@ -338,6 +342,22 @@ export const getTrustedOrganizations = (id) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
       .populate({
+        path: 'interests',
+        model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
         path: 'trustedOrganizations.organization',
         model: 'Organization',
       })
@@ -360,6 +380,22 @@ export const getUserInterests = (id) => {
       .populate({
         path: 'interests',
         model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
       })
       .then((user) => {
         if (user !== null) {
