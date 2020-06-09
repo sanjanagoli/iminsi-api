@@ -35,7 +35,7 @@ export const dailyAPICall = () => {
             const country = apiCountries.NEWS_API[countryName];
             newsapi.v2.topHeadlines({
               category,
-              language: 'en',
+              // language: 'en',
               country,
             })
               .then((response) => {
@@ -56,8 +56,9 @@ export const dailyAPICall = () => {
 
     newsApiPromises.push(
       new Promise((resolve, reject) => {
-        Object.values(apiCountries.NEWS_API).map((country) => {
+        Object.keys(apiCountries.NEWS_API).map((countryName) => {
           apiCategories.NEWS_API_Politics.forEach((politicsQuery) => {
+            const country = apiCountries.NEWS_API[countryName];
             newsapi.v2.topHeadlines({
               q: politicsQuery,
               language: 'en',
@@ -66,6 +67,7 @@ export const dailyAPICall = () => {
               .then((response) => {
                 // console.log(response);
                 newsApiResponses.push(response);
+                populateDatabases(response, 'politics', countryName);
                 resolve(response);
               })
               .catch((err) => {
@@ -123,7 +125,8 @@ export const populateDatabases = (data, category, country) => {
           console.log(res);
           // now we should populate interest arrays and organization arrays with the added article
           if (res != null) {
-            populateAll(category, country, res)
+            const nameOfSource = art.source.name || '';
+            populateAll(category, country, res, nameOfSource)
               .catch((error) => {
                 console.log('populating all interests and news org failed');
                 console.log(error);
@@ -140,7 +143,7 @@ export const populateDatabases = (data, category, country) => {
 };
 
 
-export const populateAll = (category, country, artcl) => {
+export const populateAll = (category, country, artcl, sourceName) => {
   return new Promise((res, rej) => {
     Interest.addArticleToInterest(category, artcl)
       .then((response) => {
@@ -166,7 +169,7 @@ export const populateAll = (category, country, artcl) => {
       });
 
     const organizationBaseUrl = artcl.urlSource.substring(artcl.urlSource.indexOf('://') + 3, findNthOccurence(artcl.urlSource, 3, '/'));
-    Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl)
+    Organization.addArticleToNewsOrganization(organizationBaseUrl, artcl, sourceName)
       .then((org) => {
         // adds news organization to article based on the newly created/updated organization
         Article.updateArticleOrganization(artcl.id, org)
