@@ -190,6 +190,26 @@ export const addArticleToProfile = (id, article) => {
   console.log('in add', article);
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, { $addToSet: { profileArticles: new mongoose.Types.ObjectId(article.id) } }, { new: true })
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -207,6 +227,26 @@ export const deleteUserArticle = (id, article) => {
   console.log('in delete', article);
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(id, { $pull: { profileArticles: article.id } }, { new: true })
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user);
@@ -251,7 +291,7 @@ export const addOrganizationToProfile = (id, organizations) => {
     const obj = {
       totalReadArticles: 0,
       totalScore: 1,
-      organization: new mongoose.Types.ObjectId(org.id),
+      organization: new mongoose.Types.ObjectId(org),
     };
     return organizationObjects.push(obj);
   });
@@ -265,6 +305,26 @@ export const addOrganizationToProfile = (id, organizations) => {
         },
       },
     }, { new: true })
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+        populate: {
+          path: 'articles',
+          model: 'Article',
+          populate: {
+            path: 'newsOrganization',
+            model: 'Organization',
+          },
+        },
+      })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user);
