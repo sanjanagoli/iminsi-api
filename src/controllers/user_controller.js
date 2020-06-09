@@ -223,6 +223,10 @@ export const deleteUserArticle = (id, article) => {
 export const getProfileArticles = (id) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user.profileArticles);
@@ -333,6 +337,10 @@ export const deleteUserInterest = (id, interest) => {
 export const getTrustedOrganizations = (id) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user.trustedOrganizations);
@@ -349,6 +357,10 @@ export const getTrustedOrganizations = (id) => {
 export const getUserInterests = (id) => {
   return new Promise((resolve, reject) => {
     User.findById(id)
+      .populate({
+        path: 'interests',
+        model: 'Interest',
+      })
       .then((user) => {
         if (user !== null) {
           resolve(user.interests);

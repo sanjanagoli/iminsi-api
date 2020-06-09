@@ -223,7 +223,7 @@ export const getVerifiedList = () => {
         if (articles.length < 50) {
           resolve(articles.splice(0, articles.length));
         } else {
-          resolve(articles.splice(0, 50));
+          resolve(articles.splice(0, 20));
         }
       })
       .catch((error) => {
