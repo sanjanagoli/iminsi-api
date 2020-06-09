@@ -26,6 +26,14 @@ export const getUserByUsername = (username) => {
           },
         },
       })
+      .populate({
+        path: 'profileArticles',
+        model: 'Article',
+      })
+      .populate({
+        path: 'trustedOrganizations.organization',
+        model: 'Organization',
+      })
       // .populate({
       //   path: 'profileArticles',
       //   model: 'Article',
