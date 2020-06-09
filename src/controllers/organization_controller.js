@@ -7,25 +7,39 @@ import RESPONSE_CODES from '../constants/index';
 
 // handle for array of references to interests, articles, and analytics potentially
 export const createOrganization = (body) => {
+  // return new Promise((resolve, reject) => {
+  //   Organization.exists({ sourceUrl: body.sourceUrl })
+  //     .then((response) => {
+  //       if (!response) {
+  //         console.log('creating organization...');
+  //         Organization.create({
+  //           orgName: body.orgName,
+  //           score: 1,
+  //           sourceUrl: body.sourceUrl,
+  //           articles: body.articles || [],
+  //         }).then((result) => {
+  //           resolve(result);
+  //         }).catch((error) => {
+  //           reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+  //         });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+  //     });
+  // });
   return new Promise((resolve, reject) => {
-    Organization.exists({ sourceUrl: body.sourceUrl })
-      .then((response) => {
-        if (!response) {
-          Organization.create({
-            orgName: body.orgName,
-            score: 1,
-            sourceUrl: body.sourceUrl,
-            articles: body.articles || [],
-          }).then((result) => {
-            resolve(result);
-          }).catch((error) => {
-            reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-          });
-        }
-      })
-      .catch((error) => {
-        reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
-      });
+    console.log('creating organization...');
+    Organization.create({
+      orgName: body.orgName,
+      score: 1,
+      sourceUrl: body.sourceUrl,
+      articles: body.articles || [],
+    }).then((result) => {
+      resolve(result);
+    }).catch((error) => {
+      reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
+    });
   });
 };
 
@@ -40,7 +54,7 @@ export const deleteOrganization = (id) => {
   });
 };
 
-export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
+export const addArticleToNewsOrganization = (organizationBaseUrl, article, sourceName) => {
   return new Promise((resolve, reject) => {
     Organization.exists({ sourceUrl: organizationBaseUrl })
       .then((response) => {
@@ -59,16 +73,19 @@ export const addArticleToNewsOrganization = (organizationBaseUrl, article) => {
               reject({ code: RESPONSE_CODES.INTERNAL_ERROR, error });
             });
         } else {
-          console.log('doesnt exist');
+          console.log('it doesnt exist');
           const tempArticleId = new mongoose.Types.ObjectId(article.id);
+          console.log('before');
           const organization = {
-            orgName: article.source.name,
+            orgName: sourceName || '',
             score: 1,
             sourceUrl: organizationBaseUrl,
             articles: [tempArticleId],
           };
+          console.log('after', JSON.stringify(organization));
           createOrganization(organization)
             .then((org) => {
+              console.log('created');
               resolve(org);
             })
             .catch((error) => {
