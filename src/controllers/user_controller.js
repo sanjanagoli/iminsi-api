@@ -364,7 +364,8 @@ export const deleteUserOrganization = (id, organization) => {
 export const addInterestToProfile = (id, interests) => {
   const interestObjects = [];
   interests.map((interest) => {
-    return interestObjects.push(new mongoose.Types.ObjectId(interest.id));
+    const interestId = interest.id || interest._id;
+    return interestObjects.push(new mongoose.Types.ObjectId(interestId));
   });
 
   return new Promise((resolve, reject) => {
