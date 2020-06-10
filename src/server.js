@@ -11,7 +11,7 @@ import apiRouter from './router';
 // import createArticle from './controllers/article_controller';
 // import * as Article from './controllers/article_controller';
 // import * as Organization from './controllers/organization_controller';
-import * as ApiController from './controllers/api_controller';
+// import * as ApiController from './controllers/api_controller';
 // import * as UserController from './controllers/user_controller';
 // import * as Interest from './controllers/interest_controller';
 
@@ -73,11 +73,3 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
-
-ApiController.dailyAPICall()
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
