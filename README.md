@@ -32,4 +32,4 @@ Future plans: In the future, we hope to call other external APIs that will allow
 
 ## Acknowledgments
 
-We'd like to thank Tim for all of his guidance and for being such a great instructor in CS52! 
+We'd like to thank Tim for all of his guidance! 
