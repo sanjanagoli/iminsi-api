@@ -1,6 +1,4 @@
-# Project Name
-
-![Team Photo](https://imgur.com/PdFw8A9)
+# Project Iminsi
 
 Africa has a chronic media problem. It is very difficult to know what is happening in other countries in Africa without relying on western news coverage. Iminsi is the first all-African news app. The app uses the power of crowdsourcing to deliver a platform of reliable, local African news. 
 
