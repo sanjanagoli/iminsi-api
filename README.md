@@ -8,7 +8,7 @@ Frontend can be found here: https://github.com/sanjanagoli/project-iminsi
 
 ## Setup
 
-`cd project-api-iminsi` <br />
+`cd iminsi-api` <br />
 `yarn install` to install all dependencies <br />
 `yarn start` to start server and database
 
