@@ -4,7 +4,7 @@ Africa has a chronic media problem. It is very difficult to know what is happeni
 
 ## Architecture
 
-Frontend can be found here: https://github.com/sanjanagoli/project-iminsi
+Frontend can be found here: https://github.com/sanjanagoli/iminsi
 
 ## Setup
 
